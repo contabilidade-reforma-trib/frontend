@@ -67,11 +67,21 @@ Pare, descreva e aguarde resposta antes de alterar:
 
 O usuário pode ter Copiloto, Mentoria, ou os dois. A UI **pergunta** ao backend o direito de uso; nunca deduz do plano nem esconde regra no front. Produto não contratado aparece como oferta — não some do menu.
 
-### 2.6 Segredo não entra no repositório
+### 2.6 O navegador só fala com a própria origem
+
+O front usa o servidor do Next como **BFF** (D-14). Regras que decorrem disso:
+
+- Componente de cliente chama **caminho relativo** (`/api/...`), nunca a URL do backend.
+- A URL do backend vive em `API_URL`, variável de **servidor**, lida só em route handlers de `src/app/api/`.
+- **Nada de `NEXT_PUBLIC_` para endereço ou credencial de backend.** `NEXT_PUBLIC_` vai para o bundle e qualquer pessoa lê.
+- Quando a autenticação chegar, o token fica em cookie `httpOnly`, lido no route handler e traduzido em cabeçalho para o backend. Ele **não** chega ao JavaScript da página.
+- URL absoluta de backend em código de cliente é achado bloqueante na revisão.
+
+### 2.7 Segredo não entra no repositório
 
 Variáveis de ambiente locais em `.env.local` (ignorado). Em produção, nas variáveis da Vercel. Nada de chave em código, nem em `NEXT_PUBLIC_` que não seja realmente público.
 
-### 2.7 Antes de commitar: revisão obrigatória
+### 2.8 Antes de commitar: revisão obrigatória
 
 Quando o commit é feito por IA, ele **não** é feito direto. Antes de `git commit`:
 
@@ -80,7 +90,7 @@ Quando o commit é feito por IA, ele **não** é feito direto. Antes de `git com
 3. **Relate os achados à pessoa que está desenvolvendo**, com arquivo e linha, antes de commitar. Não commite silenciosamente por cima de um achado.
 4. Achado grave (regra de acesso decidida no front, token de design hardcoded, componente de `ui/` conhecendo domínio, valor tributário inventado em texto) **bloqueia o commit** até ser resolvido ou dispensado explicitamente pela pessoa.
 
-### 2.8 Antes de dar push: suíte inteira verde
+### 2.9 Antes de dar push: suíte inteira verde
 
 Quando o push é feito por IA, antes de `git push`:
 
@@ -106,5 +116,15 @@ npm test && npm run build
 
 Não faça commit nem push sem o usuário pedir. Quando pedir:
 
-- **Commit** → revisão de [docs/revisao-pre-commit.md](docs/revisao-pre-commit.md) antes, achados relatados (§2.7).
-- **Push** → suíte inteira verde antes (§2.8).
+- **Commit** → revisão de [docs/revisao-pre-commit.md](docs/revisao-pre-commit.md) antes, achados relatados (§2.8).
+- **Push** → suíte inteira verde antes (§2.9).
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

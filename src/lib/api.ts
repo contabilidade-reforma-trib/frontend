@@ -1,10 +1,13 @@
 /**
- * Cliente da API do backend. Base configurada por variável de ambiente para que
- * localhost, preview da Vercel e produção usem o mesmo código.
+ * Cliente da API, do lado do navegador.
+ *
+ * Todas as chamadas vão para a **própria origem** (`/api/...`), onde o servidor
+ * do Next atua como BFF e repassa para o backend no Railway. O navegador nunca
+ * conhece a URL do backend, e o backend não precisa de CORS.
+ *
+ * A URL do backend vive em `API_URL`, variável de servidor, lida apenas nos
+ * route handlers em `src/app/api/`. Nada de `NEXT_PUBLIC_`.
  */
-
-export const URL_DA_API =
-  process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "") ?? "http://localhost:5000";
 
 export type EstadoDoBanco = {
   conectado: boolean;
@@ -30,46 +33,32 @@ export type ResultadoDaChamada<T> =
   | { ok: true; dados: T }
   | { ok: false; mensagem: string };
 
-const TEMPO_LIMITE_MS = 8000;
+const MENSAGEM_PADRAO_DE_FALHA =
+  "Não foi possível falar com o servidor do Next. Recarregue a página e, se persistir, verifique o deploy na Vercel.";
 
 /**
  * Erro de rede e erro HTTP viram a mesma forma de retorno, porque quem chama
- * precisa tratar os dois — e uma mensagem que diz o que fazer vale mais que
- * uma exceção genérica na tela.
+ * precisa tratar os dois — e uma mensagem que diz o que fazer vale mais que uma
+ * exceção genérica na tela.
  */
 export async function consultarSaude(): Promise<ResultadoDaChamada<RespostaDeSaude>> {
-  const controlador = new AbortController();
-  const expiracao = setTimeout(() => controlador.abort(), TEMPO_LIMITE_MS);
-
   try {
-    const resposta = await fetch(`${URL_DA_API}/api/saude`, {
-      signal: controlador.signal,
+    const resposta = await fetch("/api/saude", {
       cache: "no-store",
       headers: { Accept: "application/json" },
     });
 
+    const corpo = await resposta.json().catch(() => null);
+
     if (!resposta.ok) {
-      return {
-        ok: false,
-        mensagem: `A API respondeu ${resposta.status}. Verifique se o backend subiu no Railway.`,
-      };
+      const mensagem =
+        corpo && typeof corpo.mensagem === "string" ? corpo.mensagem : MENSAGEM_PADRAO_DE_FALHA;
+
+      return { ok: false, mensagem };
     }
 
-    const dados = (await resposta.json()) as RespostaDeSaude;
-    return { ok: true, dados };
-  } catch (erro) {
-    if (erro instanceof DOMException && erro.name === "AbortError") {
-      return {
-        ok: false,
-        mensagem: "A API não respondeu em 8 segundos. Ela pode estar hibernando — tente de novo.",
-      };
-    }
-
-    return {
-      ok: false,
-      mensagem: `Não foi possível falar com a API em ${URL_DA_API}. Confira NEXT_PUBLIC_API_URL e o CORS do backend.`,
-    };
-  } finally {
-    clearTimeout(expiracao);
+    return { ok: true, dados: corpo as RespostaDeSaude };
+  } catch {
+    return { ok: false, mensagem: MENSAGEM_PADRAO_DE_FALHA };
   }
 }

@@ -16,7 +16,19 @@ describe("consultarSaude", () => {
     vi.unstubAllGlobals();
   });
 
-  it("Deve_devolver_os_dados_quando_a_api_responde_ok", async () => {
+  it("Deve_chamar_a_propria_origem_e_nunca_o_backend_direto", async () => {
+    const espiao = vi.fn().mockResolvedValue({ ok: true, json: async () => SAUDE_OK });
+    vi.stubGlobal("fetch", espiao);
+
+    await consultarSaude();
+
+    // Caminho relativo é o que garante que o navegador fale só com a Vercel:
+    // sem URL absoluta, não há origem cruzada e não há CORS.
+    const [url] = espiao.mock.calls[0];
+    expect(url).toBe("/api/saude");
+  });
+
+  it("Deve_devolver_os_dados_quando_o_bff_responde_ok", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({ ok: true, json: async () => SAUDE_OK }),
@@ -31,42 +43,53 @@ describe("consultarSaude", () => {
     }
   });
 
-  it("Deve_dizer_o_status_http_quando_a_api_responde_com_erro", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 503 }));
-
-    const resultado = await consultarSaude();
-
-    expect(resultado.ok).toBe(false);
-    if (!resultado.ok) {
-      expect(resultado.mensagem).toContain("503");
-      expect(resultado.mensagem).toContain("Railway");
-    }
-  });
-
-  it("Deve_orientar_sobre_cors_e_variavel_quando_a_rede_falha", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
-
-    const resultado = await consultarSaude();
-
-    expect(resultado.ok).toBe(false);
-    if (!resultado.ok) {
-      // A mensagem de erro precisa dizer o que fazer, não só que deu errado.
-      expect(resultado.mensagem).toContain("NEXT_PUBLIC_API_URL");
-      expect(resultado.mensagem).toContain("CORS");
-    }
-  });
-
-  it("Deve_avisar_sobre_hibernacao_quando_estoura_o_tempo_limite", async () => {
+  it("Deve_repassar_a_mensagem_que_o_bff_devolveu_no_erro", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockRejectedValue(new DOMException("Aborted", "AbortError")),
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 502,
+        json: async () => ({ mensagem: "A API respondeu 503. Verifique o serviço no Railway." }),
+      }),
     );
 
     const resultado = await consultarSaude();
 
     expect(resultado.ok).toBe(false);
     if (!resultado.ok) {
-      expect(resultado.mensagem).toContain("hibernando");
+      expect(resultado.mensagem).toContain("Railway");
+    }
+  });
+
+  it("Deve_usar_mensagem_padrao_quando_o_erro_vem_sem_corpo_legivel", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 500,
+        json: async () => {
+          throw new SyntaxError("resposta não é JSON");
+        },
+      }),
+    );
+
+    const resultado = await consultarSaude();
+
+    expect(resultado.ok).toBe(false);
+    if (!resultado.ok) {
+      // Mesmo sem corpo, a mensagem precisa dizer o que fazer.
+      expect(resultado.mensagem).toContain("Vercel");
+    }
+  });
+
+  it("Deve_tratar_queda_de_rede_sem_estourar_excecao", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
+
+    const resultado = await consultarSaude();
+
+    expect(resultado.ok).toBe(false);
+    if (!resultado.ok) {
+      expect(resultado.mensagem).toContain("servidor do Next");
     }
   });
 });

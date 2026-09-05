@@ -6,7 +6,7 @@ Atualize ao final de **toda** sessão. É por aqui que a próxima sessão descob
 
 ## Onde estamos
 
-App Next.js criado e funcionando, com a **landing completa** em `/` e o **teste de comunicação com o backend** por toast. 11 testes verdes. Copy e números são provisórios até as mentoras confirmarem (F-18). Ver [em-andamento.md](em-andamento.md).
+App Next.js criado e funcionando, com a **landing completa** em `/` e o **teste de comunicação com o backend** por toast. 12 testes verdes. Copy e números são provisórios até as mentoras confirmarem (F-18). Ver [em-andamento.md](em-andamento.md).
 
 ## Stack
 
@@ -32,10 +32,11 @@ App Next.js criado e funcionando, com a **landing completa** em `/` e o **teste 
 - `.githooks/pre-push` versionado (ative com `git config core.hooksPath .githooks`)
 - `COMECE-AQUI.md` — guia de entrada com instalação, hooks e instalação da skill de contexto
 - `.agents/skills/praxis-contexto/` — skill do Codex que carrega o contexto; é ponteiro para os `AGENTS.md`, não contém regra
-- `src/lib/api.ts` — cliente da API, com mensagens de erro que dizem o que fazer
+- `src/app/api/saude/route.ts` — **BFF**: o navegador chama a própria origem, o servidor do Next fala com o Railway (D-14)
+- `src/lib/api.ts` — cliente do navegador, só caminhos relativos; mensagens de erro que dizem o que fazer
 - `src/components/ui/Toast.tsx` e `src/components/sistema/TesteDeComunicacao.tsx` — prova de que front e API se enxergam
 - `docs/deploy.md` — configuração e variáveis da Vercel
-- `.env.example` com `NEXT_PUBLIC_API_URL`
+- `.env.example` com `API_URL` (variável de servidor, fora do bundle)
 - `docs/revisao-pre-commit.md` — procedimento de revisão, legível por qualquer ferramenta
 - `design/direcoes.html` e `design/copiloto-fiscal.html` — estudos e direção aprovada
 - Documentação: produto, padrões, design system, backlog, em andamento

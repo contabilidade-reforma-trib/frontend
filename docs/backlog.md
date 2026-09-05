@@ -77,3 +77,4 @@ Ao concluir um item, mova para **Concluídos** com a data. Não apague.
 | 2026-09-05 | **F-02** Cliente de API tipado em `lib/api.ts` |
 | 2026-09-05 | Toast e teste de comunicação com o backend |
 | 2026-09-05 | `docs/deploy.md` com a configuração da Vercel |
+| 2026-09-05 | **BFF (D-14)**: navegador fala só com a própria origem; `API_URL` sai do bundle e o backend dispensa CORS |

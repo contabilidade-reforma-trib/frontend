@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Toast, type TipoDeToast } from "@/components/ui/Toast";
-import { consultarSaude, URL_DA_API, type RespostaDeSaude } from "@/lib/api";
+import { consultarSaude, type RespostaDeSaude } from "@/lib/api";
 
 type Estado =
   | { fase: "consultando" }
@@ -10,8 +10,11 @@ type Estado =
   | { fase: "erro"; mensagem: string };
 
 /**
- * Prova de que o front na Vercel e a API no Railway se enxergam. Roda uma vez
- * ao abrir a página e mostra o resultado num toast.
+ * Prova de que a cadeia inteira funciona: navegador → servidor do Next na
+ * Vercel → API no Railway → banco no Neon. Roda uma vez ao abrir a página.
+ *
+ * A chamada é para /api/saude, na própria origem: o navegador não conhece a URL
+ * do backend, e por isso não há CORS envolvido.
  *
  * É intencionalmente visível: enquanto a POC está sendo montada, saber que os
  * dois ambientes conversam vale mais do que uma tela limpa. Sai quando o
@@ -43,7 +46,7 @@ export function TesteDeComunicacao() {
       <Toast
         tipo="carregando"
         titulo="Testando comunicação com o backend…"
-        descricao={URL_DA_API}
+        descricao="navegador → Next (BFF) → API → banco"
       />
     );
   }
