@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# O .env.example é a documentação das variáveis: não tem valor real e precisa
+# chegar em quem clona o repositório.
+!.env.example
 
 # vercel
 .vercel
