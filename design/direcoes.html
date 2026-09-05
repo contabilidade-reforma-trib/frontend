@@ -1,0 +1,989 @@
+<title>Três Direções Praxis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+/* ============ WRAPPER (a apresentação) ============ */
+:root{
+  --paper:#FBFAF8; --ink:#15171B; --muted:#62666E; --line:#E4E1DB;
+  --srf:#FFFFFF; --acc:#2E5E52; --acc-soft:#E9F0EC; --shadow:0 1px 2px rgba(20,22,26,.05),0 12px 32px -18px rgba(20,22,26,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111214; --ink:#EBE9E4; --muted:#9A9DA5; --line:#292B30;
+    --srf:#17191C; --acc:#7DBBA9; --acc-soft:#1B2724; --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px -18px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111214; --ink:#EBE9E4; --muted:#9A9DA5; --line:#292B30;
+  --srf:#17191C; --acc:#7DBBA9; --acc-soft:#1B2724; --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px -18px rgba(0,0,0,.7);
+}
+body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+a{color:inherit}
+
+.masthead{padding:44px 0 26px;border-bottom:1px solid var(--line)}
+.kicker{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin:0 0 14px}
+.masthead h1{font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:clamp(28px,4vw,44px);line-height:1.08;letter-spacing:-.025em;margin:0 0 14px;text-wrap:balance;max-width:20ch}
+.lede{margin:0;max-width:66ch;color:var(--muted);font-size:16px}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;padding:4px 9px;border:1px solid var(--line);border-radius:3px;color:var(--muted);background:var(--srf)}
+
+.picker{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 0}
+.picker-inner{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{appearance:none;border:1px solid var(--line);background:var(--srf);color:var(--muted);font:inherit;font-size:13px;padding:7px 14px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color .15s,color .15s}
+.tab .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{border-color:var(--ink);color:var(--ink);background:var(--srf);font-weight:500}
+.tab:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.screens{display:flex;gap:2px;background:var(--line);padding:2px;border-radius:8px}
+.screens .tab{border:0;border-radius:6px;background:transparent;padding:6px 12px;font-size:12.5px}
+.screens .tab[aria-selected="true"]{background:var(--srf);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+.dir-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:32px;padding:34px 0 22px;align-items:start}
+@media (max-width:820px){.dir-head{grid-template-columns:1fr;gap:20px}}
+.dir-head h2{margin:0 0 8px;font-size:26px;letter-spacing:-.02em;font-weight:600}
+.dir-head .num{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:10px}
+.dir-head p{margin:0;color:var(--muted);font-size:15px;max-width:60ch}
+.specs{display:grid;gap:10px;font-size:13px}
+.spec{display:grid;grid-template-columns:88px 1fr;gap:12px;align-items:baseline;border-top:1px solid var(--line);padding-top:9px}
+.spec dt{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.spec dd{margin:0;color:var(--ink)}
+.swatches{display:flex;gap:5px;margin-top:2px}
+.sw{width:20px;height:20px;border-radius:4px;border:1px solid rgba(0,0,0,.12)}
+
+/* ---- moldura de navegador ---- */
+.frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:56px;background:var(--srf)}
+.chrome{display:flex;align-items:center;gap:12px;padding:9px 14px;border-bottom:1px solid rgba(0,0,0,.12)}
+.chrome .lights{display:flex;gap:6px}
+.chrome .lights i{width:9px;height:9px;border-radius:50%;display:block;opacity:.75}
+.chrome .url{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:4px 12px;border-radius:5px;flex:1;max-width:360px;text-align:center;opacity:.8}
+.scroller{overflow-x:auto}
+.mock{min-width:900px;font-size:13px;line-height:1.5}
+.note{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin:-40px 0 56px;display:flex;gap:8px;align-items:flex-start}
+.note b{color:var(--ink);font-weight:500}
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="kicker">Praxis Tributária · POC · Estudo de direção</p>
+    <h1>Três direções para um mesmo produto</h1>
+    <p class="lede">Uma plataforma com dois corações: um <strong>assistente de IA</strong> que responde dúvidas práticas da Reforma Tributária a partir da documentação dos mentores, e uma <strong>Mentoria</strong> com trilhas, módulos e aulas. Cada direção abaixo resolve a mesma jornada — venda, login, chat e trilha — apostando em um herói diferente.</p>
+    <div class="meta-row">
+      <span class="tag">Landing + checkout (mock)</span>
+      <span class="tag">Chat RAG com citações</span>
+      <span class="tag">Mentoria / trilhas</span>
+      <span class="tag">Next.js + .NET</span>
+    </div>
+  </div>
+</header>
+
+<nav class="picker" aria-label="Escolha de direção e tela">
+  <div class="wrap picker-inner">
+    <div class="tabs" role="tablist" aria-label="Direção visual">
+      <button class="tab" role="tab" data-dir="a" aria-selected="true"><span class="dot" style="background:#1B4D8F"></span>A · Escritório</button>
+      <button class="tab" role="tab" data-dir="b" aria-selected="false"><span class="dot" style="background:#E09B3D"></span>B · Sala de aula</button>
+      <button class="tab" role="tab" data-dir="c" aria-selected="false"><span class="dot" style="background:#F2C14E"></span>C · Copiloto</button>
+    </div>
+    <div class="screens" role="tablist" aria-label="Tela">
+      <button class="tab" role="tab" data-screen="landing" aria-selected="true">Landing</button>
+      <button class="tab" role="tab" data-screen="chat" aria-selected="false">Chat</button>
+      <button class="tab" role="tab" data-screen="mentoria" aria-selected="false">Mentoria</button>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* ============ DIREÇÃO A — ESCRITÓRIO ============ */
+.d-a{--bg:#EDF1F4;--srf:#FFFFFF;--fg:#0F1822;--mut:#5A6775;--ln:#D5DDE4;--acc:#1B4D8F;--acc2:#8C2F39;--ok:#0F5132;--ink2:#101C2B}
+.d-a .chrome{background:#DCE3E9;border-bottom-color:#C6D0D9}
+.d-a .chrome .lights i{background:#93A1AD}
+.d-a .chrome .url{background:#F3F6F8;color:#5A6775;border:1px solid #CDD7DF}
+.d-a .mock{background:var(--bg);color:var(--fg);font-family:"Public Sans",system-ui,sans-serif}
+.d-a h1,.d-a h2,.d-a h3{font-family:"Fraunces","Times New Roman",serif;font-weight:600;letter-spacing:-.015em;margin:0}
+.d-a .strip{background:var(--ink2);color:#B9C6D4;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;padding:6px 34px;display:flex;justify-content:space-between}
+.d-a .strip b{color:#fff;font-weight:500}
+.d-a .nav{display:flex;align-items:center;gap:24px;padding:16px 34px;background:var(--srf);border-bottom:1px solid var(--ln)}
+.d-a .logo{font-family:"Fraunces",serif;font-weight:700;font-size:19px;letter-spacing:-.02em}
+.d-a .logo sup{font-family:"IBM Plex Mono",monospace;font-size:8px;letter-spacing:.1em;color:var(--acc2);vertical-align:super;margin-left:3px}
+.d-a .nav nav{display:flex;gap:20px;font-size:13px;color:var(--mut)}
+.d-a .nav nav span[data-on]{color:var(--fg);font-weight:600;box-shadow:inset 0 -2px 0 var(--acc2)}
+.d-a .nav .right{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:13px}
+.d-a .btn{background:var(--acc);color:#fff;padding:8px 17px;border-radius:2px;font-size:13px;font-weight:600;border:1px solid var(--acc);display:inline-block}
+.d-a .btn.ghost{background:transparent;color:var(--acc)}
+.d-a .hero{display:grid;grid-template-columns:1.25fr .85fr;gap:44px;padding:50px 34px 44px;align-items:start}
+.d-a .hero h1{font-size:42px;line-height:1.05;max-width:16ch;margin-bottom:18px}
+.d-a .hero h1 em{font-style:italic;color:var(--acc)}
+.d-a .hero p{color:var(--mut);font-size:15px;max-width:48ch;margin:0 0 24px;line-height:1.6}
+.d-a .cta-row{display:flex;gap:14px;align-items:center;font-size:13px}
+.d-a .ficha{background:var(--srf);border:1px solid var(--ln);border-top:3px solid var(--acc2);padding:24px;position:relative}
+.d-a .ficha .cap{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.d-a .price{font-family:"Fraunces",serif;font-size:38px;line-height:1;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.d-a .price small{font-family:"Public Sans",sans-serif;font-size:13px;color:var(--mut);font-weight:400}
+.d-a .ficha ul{list-style:none;padding:0;margin:18px 0;display:grid;gap:9px;font-size:13px}
+.d-a .ficha li{display:grid;grid-template-columns:14px 1fr;gap:9px;color:var(--mut);line-height:1.4}
+.d-a .ficha li b{color:var(--fg);font-weight:600}
+.d-a .ficha li i{color:var(--ok);font-style:normal}
+.d-a .ficha .btn{display:block;text-align:center;width:100%}
+.d-a .selo{position:absolute;top:-13px;right:-9px;background:var(--acc2);color:#fff;font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;padding:5px 9px;transform:rotate(4deg)}
+.d-a .ledger{background:var(--srf);border-top:1px solid var(--ln);padding:32px 34px 36px}
+.d-a .ledger h3{font-size:11px;font-family:"IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:400;margin-bottom:14px}
+.d-a .lrow{display:grid;grid-template-columns:78px 1fr 230px;gap:20px;padding:12px 0;border-top:1px solid var(--ln);align-items:baseline}
+.d-a .lrow code{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--acc);letter-spacing:.03em}
+.d-a .lrow strong{font-weight:600;font-size:14px}
+.d-a .lrow span{color:var(--mut);font-size:12.5px}
+.d-a .foot{padding:14px 34px;font-size:11px;color:var(--mut);border-top:1px solid var(--ln);background:var(--bg);display:flex;justify-content:space-between}
+
+.d-a .app{display:grid;grid-template-columns:212px minmax(0,1fr) 268px;min-height:620px;background:var(--srf)}
+.d-a .rail{border-right:1px solid var(--ln);background:#F5F8FA;padding:16px 0}
+.d-a .rail .newq{margin:0 14px 18px;display:block;width:calc(100% - 28px);text-align:center;background:var(--acc);color:#fff;padding:8px;font-size:12.5px;font-weight:600;border-radius:2px}
+.d-a .rail h4{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:0 14px 8px;font-weight:400}
+.d-a .qitem{padding:8px 14px;font-size:12.5px;color:var(--mut);border-left:2px solid transparent;line-height:1.35}
+.d-a .qitem[data-on]{background:#fff;border-left-color:var(--acc2);color:var(--fg);font-weight:600}
+.d-a .qitem em{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10px;color:#8B98A5;margin-top:2px;font-weight:400}
+.d-a .thread{padding:24px 30px 22px;display:flex;flex-direction:column;gap:20px;border-right:1px solid var(--ln)}
+.d-a .ask{border-left:3px solid var(--fg);padding:2px 0 2px 14px;font-size:14.5px;max-width:62ch}
+.d-a .ask em{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:5px}
+.d-a .ans{max-width:66ch;font-size:14px;line-height:1.62;color:#22303D}
+.d-a .ans h3{font-size:18px;margin-bottom:10px}
+.d-a .ans p{margin:0 0 12px}
+.d-a .cit{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--acc);vertical-align:super;background:#E8EFF7;padding:1px 3px;border-radius:2px}
+.d-a table.calc{border-collapse:collapse;font-size:12.5px;margin:4px 0 14px;width:100%;max-width:430px;font-variant-numeric:tabular-nums}
+.d-a table.calc th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:400;border-bottom:1px solid var(--ln);padding:5px 10px 5px 0}
+.d-a table.calc td{padding:6px 10px 6px 0;border-bottom:1px solid #EBF0F4}
+.d-a table.calc td:last-child,.d-a table.calc th:last-child{text-align:right;padding-right:0}
+.d-a .alerta{border:1px solid #E4CBCF;background:#FBF4F5;padding:11px 13px;font-size:12.5px;color:#6E2B33;display:grid;grid-template-columns:14px 1fr;gap:9px;line-height:1.45}
+.d-a .composer{margin-top:auto;border:1px solid var(--ln);background:#F8FAFB;padding:11px 13px;display:flex;gap:10px;align-items:center;font-size:13px;color:#93A0AC}
+.d-a .composer .btn{padding:6px 14px;margin-left:auto}
+.d-a .sources{padding:18px 16px;background:#F5F8FA;display:flex;flex-direction:column;gap:11px}
+.d-a .sources h4{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:0;font-weight:400}
+.d-a .src{background:#fff;border:1px solid var(--ln);padding:11px 12px;font-size:12px;line-height:1.45}
+.d-a .src .n{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:#fff;background:var(--acc);padding:1px 5px;border-radius:2px;margin-right:6px}
+.d-a .src b{display:block;margin:7px 0 4px;font-size:12px}
+.d-a .src q{color:var(--mut);font-style:italic;display:block}
+.d-a .src .orig{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--acc2);letter-spacing:.05em;margin-top:7px;display:block}
+
+.d-a .mhead{padding:20px 34px 16px;background:var(--srf);border-bottom:1px solid var(--ln)}
+.d-a .crumb{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;color:var(--mut);margin-bottom:8px}
+.d-a .mhead h2{font-size:25px}
+.d-a .prog{display:flex;align-items:center;gap:14px;margin-top:12px;font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}
+.d-a .bar{flex:1;max-width:300px;height:5px;background:#DFE6EC}
+.d-a .bar i{display:block;height:100%;background:var(--ok)}
+.d-a .mbody{display:grid;grid-template-columns:1.1fr 1fr;background:var(--srf)}
+.d-a .player{padding:24px 30px 30px;border-right:1px solid var(--ln)}
+.d-a .screenbox{aspect-ratio:16/9;background:linear-gradient(150deg,#16283C,#0F1822);position:relative;display:flex;align-items:center;justify-content:center}
+.d-a .screenbox .play{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;color:#0F1822;font-size:15px;padding-left:4px}
+.d-a .screenbox .ts{position:absolute;bottom:10px;left:12px;font-family:"IBM Plex Mono",monospace;font-size:10px;color:#C7D5E3;letter-spacing:.06em}
+.d-a .player h3{font-size:19px;margin:16px 0 6px}
+.d-a .player p{color:var(--mut);font-size:13px;margin:0 0 16px;line-height:1.55}
+.d-a .anexos{border-top:1px solid var(--ln);padding-top:12px;display:grid;gap:8px}
+.d-a .anexo{display:grid;grid-template-columns:58px 1fr auto;gap:12px;font-size:12.5px;align-items:baseline;color:var(--mut)}
+.d-a .anexo code{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--acc)}
+.d-a .anexo b{color:var(--fg);font-weight:500}
+.d-a .aulas{padding:22px 30px 28px}
+.d-a .modtitle{display:flex;justify-content:space-between;align-items:baseline;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:22px 0 6px}
+.d-a .modtitle:first-child{margin-top:0}
+.d-a .aula{display:grid;grid-template-columns:26px 1fr 52px 58px;gap:10px;padding:9px 0;border-top:1px solid var(--ln);font-size:13px;align-items:baseline;font-variant-numeric:tabular-nums}
+.d-a .aula .idx{font-family:"IBM Plex Mono",monospace;font-size:11px;color:#9AA7B3}
+.d-a .aula .dur{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--mut);text-align:right}
+.d-a .aula .st{font-size:10.5px;text-align:right;font-family:"IBM Plex Mono",monospace;letter-spacing:.05em;color:#9AA7B3}
+.d-a .aula[data-done] .st{color:var(--ok)}
+.d-a .aula[data-now]{background:#F1F6FB;box-shadow:-8px 0 0 #F1F6FB,8px 0 0 #F1F6FB}
+.d-a .aula[data-now] .st{color:var(--acc)}
+</style>
+
+<section class="wrap dir-head" data-dir-panel="a">
+  <div>
+    <span class="num">Direção A</span>
+    <h2>Escritório</h2>
+    <p>O herói é a <strong>autoridade técnica</strong>. Serifa de texto jurídico, azul de carimbo, vermelho de selo e uma malha de linhas finas que lembra papel timbrado e livro razão. Toda resposta do chat chega com o painel de fontes ao lado — a promessa visual é "isto é auditável". Densa e sóbria, para o contador que vai defender a resposta na frente do cliente.</p>
+  </div>
+  <dl class="specs">
+    <div class="spec"><dt>Paleta</dt><dd><div class="swatches"><i class="sw" style="background:#EDF1F4"></i><i class="sw" style="background:#0F1822"></i><i class="sw" style="background:#1B4D8F"></i><i class="sw" style="background:#8C2F39"></i><i class="sw" style="background:#0F5132"></i></div></dd></div>
+    <div class="spec"><dt>Tipografia</dt><dd>Fraunces · Public Sans · IBM Plex Mono</dd></div>
+    <div class="spec"><dt>Layout</dt><dd>Três colunas, linhas de razão, números tabulares</dd></div>
+    <div class="spec"><dt>Risco</dt><dd>Vira "sistema de escritório antigo" se a densidade passar do ponto</dd></div>
+  </dl>
+</section>
+
+<div class="wrap">
+<!-- ===== A / LANDING ===== -->
+<div class="frame d-a" data-dir="a" data-screen="landing">
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">praxistributaria.com.br</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="strip"><span>Base normativa atualizada em <b>04.09.2026</b> · EC 132/2023 · LC 214/2025</span><span>Mentoria com CRC ativo</span></div>
+    <div class="nav">
+      <div class="logo">Praxis<sup>TRIB</sup></div>
+      <nav><span data-on>Assistente</span><span>Mentoria</span><span>Base normativa</span><span>Planos</span></nav>
+      <div class="right"><span>Entrar</span><span class="btn">Assinar</span></div>
+    </div>
+    <div class="hero">
+      <div>
+        <h1>A reforma na prática, <em>antes</em> do cliente perguntar.</h1>
+        <p>Um assistente treinado na documentação e nos casos reais dos nossos mentores — não em resumo de lei. Ele responde o que fazer com o CFOP, o crédito acumulado e o cliente do Simples, com a fonte de cada afirmação ao lado.</p>
+        <div class="cta-row"><span class="btn">Assinar — R$ 189/mês</span><span class="btn ghost">Ver uma consulta real</span></div>
+      </div>
+      <div class="ficha">
+        <div class="selo">MOCK · POC</div>
+        <div class="cap">Plano Escritório · mensal</div>
+        <div class="price">R$ 189<small> /mês por usuário</small></div>
+        <div class="cap" style="color:#0F5132">Anual R$ 1.890 — 2 meses livres</div>
+        <ul>
+          <li><i>&#10003;</i><span>Consultas <b>ilimitadas</b> ao assistente, com citação de fonte</span></li>
+          <li><i>&#10003;</i><span><b>6 trilhas</b> da Mentoria e todas as aulas novas</span></li>
+          <li><i>&#10003;</i><span>Modelos de <b>parecer e memorando</b> para o cliente</span></li>
+          <li><i>&#10003;</i><span>Base viva: cada nova IN e nota técnica entra na semana</span></li>
+        </ul>
+        <span class="btn">Assinar agora</span>
+        <div class="cap" style="margin-top:12px;text-align:center">Pagamento simulado nesta POC</div>
+      </div>
+    </div>
+    <div class="ledger">
+      <h3>Perguntas que chegam todo dia no escritório</h3>
+      <div class="lrow"><code>TRANSICAO.01</code><strong>"Meu saldo credor de ICMS some em 2033?"</strong><span>Homologação, aproveitamento em 240 parcelas e o que fazer já em 2026.</span></div>
+      <div class="lrow"><code>SIMPLES.04</code><strong>"Fico no Simples ou vou pro regime regular?"</strong><span>A conta do crédito que o cliente do meu cliente deixa de tomar.</span></div>
+      <div class="lrow"><code>CAIXA.02</code><strong>"Split payment quebra o fluxo de caixa dele?"</strong><span>Simulação de capital de giro no primeiro trimestre de recolhimento.</span></div>
+      <div class="lrow"><code>NOTA.07</code><strong>"Que campo eu preencho na nota agora?"</strong><span>Leiaute com IBS, CBS e IS — e o que fazer quando o ERP ainda não tem.</span></div>
+    </div>
+    <div class="foot"><span>Praxis Tributária · CNPJ 00.000.000/0001-00 · Protótipo</span><span>Conteúdo ilustrativo para avaliação de design</span></div>
+  </div></div>
+</div>
+
+<!-- ===== A / CHAT ===== -->
+<div class="frame d-a" data-dir="a" data-screen="chat" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxistributaria.com.br/consulta</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="nav">
+      <div class="logo">Praxis<sup>TRIB</sup></div>
+      <nav><span data-on>Assistente</span><span>Mentoria</span><span>Meus documentos</span></nav>
+      <div class="right"><span style="color:#5A6775">Aline Bertoni · CRC 1SP-284.117</span></div>
+    </div>
+    <div class="app">
+      <aside class="rail">
+        <span class="newq">Nova consulta</span>
+        <h4>Setembro</h4>
+        <div class="qitem" data-on>Crédito acumulado de ICMS na transição<em>hoje, 09:12</em></div>
+        <div class="qitem">Bar e restaurante: alíquota reduzida?<em>ontem</em></div>
+        <div class="qitem">Split payment em venda parcelada<em>02 set</em></div>
+        <h4 style="margin-top:16px">Agosto</h4>
+        <div class="qitem">Cashback na conta de luz do cliente PF<em>28 ago</em></div>
+        <div class="qitem">Imposto Seletivo em bebida açucarada<em>21 ago</em></div>
+      </aside>
+      <main class="thread">
+        <div class="ask"><em>Consulta</em>Cliente é distribuidora de bebidas em SP, tem R$ 1,4 mi de saldo credor de ICMS acumulado. Ele perde isso na transição? O que eu faço já em 2026?</div>
+        <div class="ans">
+          <h3>Não perde — mas só se ele homologar o saldo no prazo.</h3>
+          <p>O saldo credor de ICMS existente e ainda não compensado até <b>31/12/2032</b> é aproveitado como crédito contra o IBS, em <b>240 parcelas mensais</b> iguais e sucessivas, a partir de 2033, corrigido pelo IPCA <span class="cit">1</span>. O que faz o cliente perder o crédito não é a reforma: é chegar em 2032 com saldo não homologado pelo fisco estadual.</p>
+          <table class="calc">
+            <tr><th>Cenário do cliente</th><th>Valor</th></tr>
+            <tr><td>Saldo credor hoje</td><td>R$ 1.400.000,00</td></tr>
+            <tr><td>Parcela mensal a partir de 2033</td><td>R$ 5.833,33</td></tr>
+            <tr><td>Prazo de aproveitamento</td><td>240 meses</td></tr>
+          </table>
+          <p>Na prática, o crédito vira um ativo de 20 anos e vale muito menos em caixa hoje. Por isso a recomendação que damos na Mentoria é <b>queimar saldo antes de 2032</b> <span class="cit">2</span>: revisar as transferências entre estabelecimentos, e verificar se o cliente se enquadra em programa estadual de compensação com terceiros.</p>
+          <div class="alerta"><span>&#9888;</span><span><b>Ação com prazo.</b> Protocole o pedido de homologação do saldo ainda em 2026. Em SP o rito leva 18 a 30 meses e a fila só cresce à medida que 2032 se aproxima.</span></div>
+        </div>
+        <div class="composer"><span>Pergunte com o caso concreto — regime, UF, CNAE e valores…</span><span class="btn">Consultar</span></div>
+      </main>
+      <aside class="sources">
+        <h4>Fontes desta resposta</h4>
+        <div class="src">
+          <span class="n">1</span><span style="color:#5A6775">Norma</span>
+          <b>EC 132/2023 — ADCT, art. 134</b>
+          <q>"…serão aproveitados pelos contribuintes na forma de 240 parcelas mensais, iguais e sucessivas…"</q>
+          <span class="orig">Texto oficial · atualizado 04.09.2026</span>
+        </div>
+        <div class="src">
+          <span class="n">2</span><span style="color:#5A6775">Material do mentor</span>
+          <b>Roteiro de queima de saldo credor — casos SP/MG</b>
+          <q>"Em 3 dos 4 casos, a transferência entre filiais resolveu 60% do saldo sem litígio."</q>
+          <span class="orig">Aula 04 · Trilha Transição · pág. 12</span>
+        </div>
+        <div class="src">
+          <span class="n">&#43;</span><span style="color:#5A6775">Relacionado</span>
+          <b>LC 214/2025 — arts. 47 a 53</b>
+          <q>Não cumulatividade plena e apropriação de créditos.</q>
+          <span class="orig">Não citado — leitura de apoio</span>
+        </div>
+      </aside>
+    </div>
+  </div></div>
+</div>
+
+<!-- ===== A / MENTORIA ===== -->
+<div class="frame d-a" data-dir="a" data-screen="mentoria" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxistributaria.com.br/mentoria/transicao</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="nav">
+      <div class="logo">Praxis<sup>TRIB</sup></div>
+      <nav><span>Assistente</span><span data-on>Mentoria</span><span>Meus documentos</span></nav>
+      <div class="right"><span style="color:#5A6775">Aline Bertoni · CRC 1SP-284.117</span></div>
+    </div>
+    <div class="mhead">
+      <div class="crumb">MENTORIA / TRILHA 02 / TRANSIÇÃO 2026–2033</div>
+      <h2>Atravessar a transição sem quebrar o caixa do cliente</h2>
+      <div class="prog"><span>4 módulos · 23 aulas · 6h48</span><div class="bar"><i style="width:38%"></i></div><span>38% concluído</span></div>
+    </div>
+    <div class="mbody">
+      <section class="player">
+        <div class="screenbox"><div class="play">&#9654;</div><div class="ts">AULA 2.3 · 00:00 / 21:40</div></div>
+        <h3>Homologação de saldo credor: o protocolo, passo a passo</h3>
+        <p>Abrimos o processo real de uma distribuidora de SP, do levantamento contábil ao protocolo no SIPET. Ao final você monta o dossiê do seu cliente com o mesmo checklist.</p>
+        <div class="anexos">
+          <div class="anexo"><code>XLSX</code><b>Planilha de levantamento de saldo credor</b><span>42 KB</span></div>
+          <div class="anexo"><code>DOCX</code><b>Modelo de petição de homologação — SP</b><span>18 KB</span></div>
+          <div class="anexo"><code>PDF</code><b>Checklist do dossiê (1 página)</b><span>96 KB</span></div>
+        </div>
+      </section>
+      <section class="aulas">
+        <div class="modtitle"><span>Módulo 1 · O mapa da transição</span><span>6 aulas · 1h32</span></div>
+        <div class="aula" data-done><span class="idx">1.1</span><b>2026: o ano de teste de CBS e IBS</b><span class="dur">14:02</span><span class="st">visto</span></div>
+        <div class="aula" data-done><span class="idx">1.2</span><b>O que muda em 2027 e o fim do PIS/Cofins</b><span class="dur">18:35</span><span class="st">visto</span></div>
+        <div class="aula" data-done><span class="idx">1.3</span><b>A rampa de 2029 a 2032 no ICMS e no ISS</b><span class="dur">22:10</span><span class="st">visto</span></div>
+        <div class="aula" data-done><span class="idx">1.4</span><b>Alíquota de referência: como ler o número</b><span class="dur">16:48</span><span class="st">visto</span></div>
+        <div class="aula" data-done><span class="idx">1.5</span><b>Comitê Gestor do IBS: quem decide o quê</b><span class="dur">11:20</span><span class="st">visto</span></div>
+        <div class="aula" data-done><span class="idx">1.6</span><b>Caso: reunião de diagnóstico com o cliente</b><span class="dur">28:55</span><span class="st">visto</span></div>
+        <div class="modtitle"><span>Módulo 2 · Saldo credor e ativo fiscal</span><span>5 aulas · 1h44</span></div>
+        <div class="aula" data-done><span class="idx">2.1</span><b>Levantar o saldo real na contabilidade</b><span class="dur">19:04</span><span class="st">visto</span></div>
+        <div class="aula" data-done><span class="idx">2.2</span><b>Por que 240 parcelas mudam o valuation</b><span class="dur">15:12</span><span class="st">visto</span></div>
+        <div class="aula" data-now><span class="idx">2.3</span><b>Homologação: o protocolo, passo a passo</b><span class="dur">21:40</span><span class="st">agora</span></div>
+        <div class="aula"><span class="idx">2.4</span><b>Transferência entre estabelecimentos</b><span class="dur">24:18</span><span class="st">—</span></div>
+        <div class="aula"><span class="idx">2.5</span><b>Compensação com terceiros: quando cabe</b><span class="dur">23:50</span><span class="st">—</span></div>
+        <div class="modtitle"><span>Módulo 3 · Fluxo de caixa e split payment</span><span>6 aulas · 1h58</span></div>
+        <div class="aula"><span class="idx">3.1</span><b>Como o split payment entra na conciliação</b><span class="dur">20:26</span><span class="st">—</span></div>
+        <div class="aula"><span class="idx">3.2</span><b>Venda parcelada e cartão: quem retém</b><span class="dur">17:44</span><span class="st">—</span></div>
+        <div class="aula"><span class="idx">3.3</span><b>Projeção de capital de giro em 12 meses</b><span class="dur">25:10</span><span class="st">—</span></div>
+      </section>
+    </div>
+    <div class="foot"><span>Trilha 02 de 06 · Atualizada em 28.08.2026</span><span>Conteúdo ilustrativo para avaliação de design</span></div>
+  </div></div>
+</div>
+</div>
+
+<style>
+/* ============ DIREÇÃO B — SALA DE AULA ============ */
+.d-b{--bg:#FFFFFF;--soft:#F1F4F8;--fg:#16233A;--mut:#5D6B80;--ln:#E2E7EE;--acc:#DD8534;--acc-t:#FBEEDD;--gre:#1F6F6B;--gre-t:#E3F1EF}
+.d-b .chrome{background:#EAEEF3;border-bottom-color:#DCE2EA}
+.d-b .chrome .lights i{background:#AAB4C2}
+.d-b .chrome .url{background:#fff;color:#5D6B80;border:1px solid #DCE2EA;border-radius:20px}
+.d-b .mock{background:var(--bg);color:var(--fg);font-family:"Plus Jakarta Sans",system-ui,sans-serif}
+.d-b h1,.d-b h2,.d-b h3{font-family:"Bricolage Grotesque","Plus Jakarta Sans",sans-serif;font-weight:700;letter-spacing:-.03em;margin:0;text-wrap:balance}
+.d-b .nav{display:flex;align-items:center;gap:26px;padding:14px 34px;border-bottom:1px solid var(--ln)}
+.d-b .logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:19px;letter-spacing:-.04em;display:flex;align-items:center;gap:7px}
+.d-b .logo i{width:22px;height:22px;border-radius:7px;background:var(--acc);display:inline-block}
+.d-b .nav nav{display:flex;gap:4px;font-size:13px;font-weight:500;color:var(--mut)}
+.d-b .nav nav span{padding:6px 12px;border-radius:20px}
+.d-b .nav nav span[data-on]{background:var(--soft);color:var(--fg);font-weight:600}
+.d-b .nav .right{margin-left:auto;display:flex;gap:12px;align-items:center;font-size:13px;font-weight:500}
+.d-b .pill{background:var(--fg);color:#fff;padding:9px 18px;border-radius:22px;font-size:13px;font-weight:600;display:inline-block}
+.d-b .pill.acc{background:var(--acc)}
+.d-b .pill.out{background:transparent;color:var(--fg);border:1.5px solid var(--ln)}
+.d-b .avatar{width:30px;height:30px;border-radius:50%;background:var(--gre);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700}
+.d-b .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;padding:46px 34px 34px;align-items:center}
+.d-b .hero h1{font-size:46px;line-height:1.02;max-width:14ch;margin-bottom:16px}
+.d-b .hero h1 mark{background:var(--acc-t);color:var(--acc);padding:0 6px;border-radius:6px}
+.d-b .hero p{color:var(--mut);font-size:15.5px;max-width:44ch;margin:0 0 22px;line-height:1.6}
+.d-b .chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
+.d-b .chip{background:var(--soft);border-radius:18px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--mut)}
+.d-b .ctas{display:flex;gap:10px;align-items:center}
+.d-b .heroart{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.d-b .cover{border-radius:14px;aspect-ratio:4/3;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:14px;color:#fff}
+.d-b .cover .big{position:absolute;right:-8px;top:-16px;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:74px;opacity:.22;letter-spacing:-.06em}
+.d-b .cover b{font-size:13.5px;font-weight:700;position:relative;line-height:1.25}
+.d-b .cover em{position:absolute;top:12px;left:14px;font-style:normal;font-size:10px;font-weight:700;letter-spacing:.1em;opacity:.8}
+.d-b .c1{background:linear-gradient(150deg,#1F6F6B,#144B49)}
+.d-b .c2{background:linear-gradient(150deg,#DD8534,#B15E1D)}
+.d-b .c3{background:linear-gradient(150deg,#2C4470,#16233A)}
+.d-b .c4{background:linear-gradient(150deg,#7A4B7D,#452A50)}
+.d-b .statband{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);background:var(--soft)}
+.d-b .stat{padding:18px 34px;border-right:1px solid var(--ln)}
+.d-b .stat:last-child{border-right:0}
+.d-b .stat b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:26px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.d-b .stat span{font-size:12px;color:var(--mut)}
+.d-b .planos{padding:36px 34px 40px;display:grid;grid-template-columns:.9fr 1.1fr;gap:32px;align-items:center}
+.d-b .planos h2{font-size:28px;margin-bottom:10px}
+.d-b .planos>div>p{color:var(--mut);font-size:14px;max-width:36ch;margin:0}
+.d-b .cards2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.d-b .plan{border:1.5px solid var(--ln);border-radius:16px;padding:20px}
+.d-b .plan.on{border-color:var(--acc);background:var(--acc-t)}
+.d-b .plan .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--mut)}
+.d-b .plan.on .tag{color:var(--acc)}
+.d-b .plan .v{font-family:"Bricolage Grotesque",sans-serif;font-size:32px;letter-spacing:-.03em;margin:8px 0 2px;font-variant-numeric:tabular-nums}
+.d-b .plan .v small{font-size:12px;font-weight:500;color:var(--mut);font-family:"Plus Jakarta Sans",sans-serif}
+.d-b .plan ul{list-style:none;padding:0;margin:14px 0 16px;display:grid;gap:7px;font-size:12.5px;color:var(--mut)}
+.d-b .plan li::before{content:"✓";color:var(--gre);font-weight:700;margin-right:7px}
+.d-b .plan .pill{width:100%;text-align:center}
+.d-b .foot{padding:16px 34px;font-size:11.5px;color:var(--mut);border-top:1px solid var(--ln);display:flex;justify-content:space-between}
+
+.d-b .app{display:grid;grid-template-columns:196px minmax(0,1fr);min-height:620px}
+.d-b .side{border-right:1px solid var(--ln);padding:18px 12px;display:flex;flex-direction:column;gap:4px;background:#FBFCFD}
+.d-b .side .sec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9AA6B6;margin:16px 10px 6px}
+.d-b .side a{display:flex;gap:9px;align-items:center;padding:8px 10px;border-radius:9px;font-size:13px;font-weight:500;color:var(--mut);text-decoration:none}
+.d-b .side a[data-on]{background:var(--acc-t);color:#A45D14;font-weight:700}
+.d-b .side .mini{font-size:12px;color:var(--mut);padding:6px 10px;line-height:1.35}
+.d-b .conv{padding:30px 40px 22px;display:flex;flex-direction:column;gap:20px;max-width:820px;margin:0 auto;width:100%}
+.d-b .msg-u{align-self:flex-end;background:var(--fg);color:#fff;padding:12px 16px;border-radius:16px 16px 4px 16px;font-size:14px;max-width:78%;line-height:1.5}
+.d-b .msg-a{display:grid;grid-template-columns:32px 1fr;gap:12px}
+.d-b .bot{width:32px;height:32px;border-radius:10px;background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;font-family:"Bricolage Grotesque",sans-serif}
+.d-b .bubble{background:var(--soft);border-radius:4px 16px 16px 16px;padding:16px 18px;font-size:14px;line-height:1.62}
+.d-b .bubble h3{font-size:16.5px;margin-bottom:8px}
+.d-b .bubble p{margin:0 0 11px}
+.d-b .bubble p:last-child{margin-bottom:0}
+.d-b .steps{display:grid;gap:8px;margin:12px 0}
+.d-b .step{display:grid;grid-template-columns:22px 1fr;gap:10px;background:#fff;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45}
+.d-b .step i{width:22px;height:22px;border-radius:50%;background:var(--gre-t);color:var(--gre);font-style:normal;font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center}
+.d-b .srcrow{display:flex;gap:10px;margin-top:14px;overflow-x:auto;padding-bottom:2px}
+.d-b .srccard{flex:none;width:210px;background:#fff;border:1px solid var(--ln);border-radius:12px;padding:11px 12px;font-size:11.5px;line-height:1.4}
+.d-b .srccard b{display:block;font-size:12px;margin-bottom:4px;font-weight:700}
+.d-b .srccard span{color:var(--mut)}
+.d-b .srccard .kind{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:10px;margin-bottom:7px}
+.d-b .k-norma{background:#E7EDF8;color:#2C4470}
+.d-b .k-aula{background:var(--gre-t);color:var(--gre)}
+.d-b .sugs{display:flex;gap:8px;flex-wrap:wrap;margin-left:44px}
+.d-b .sug{border:1.5px solid var(--ln);border-radius:18px;padding:7px 13px;font-size:12.5px;font-weight:600;color:var(--mut)}
+.d-b .box{margin:0 40px 26px;max-width:820px;align-self:center;width:calc(100% - 80px)}
+.d-b .composer{border:1.5px solid var(--ln);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;font-size:13.5px;color:#93A0B2;background:#fff}
+.d-b .composer .pill{margin-left:auto;padding:7px 16px}
+.d-b .disc{font-size:11px;color:#93A0B2;text-align:center;margin-top:9px}
+
+.d-b .mwrap{padding:26px 34px 34px;display:flex;flex-direction:column;gap:26px}
+.d-b .resume{display:grid;grid-template-columns:250px 1fr;gap:20px;background:var(--soft);border-radius:18px;padding:16px;align-items:center}
+.d-b .thumb{border-radius:12px;aspect-ratio:16/9;background:linear-gradient(150deg,#2C4470,#16233A);position:relative;display:flex;align-items:center;justify-content:center}
+.d-b .thumb .play{width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--fg);font-size:13px;padding-left:3px}
+.d-b .resume .lbl{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.d-b .resume h3{font-size:21px;margin:6px 0 6px}
+.d-b .resume p{color:var(--mut);font-size:13px;margin:0 0 12px;max-width:52ch}
+.d-b .pbar{height:6px;border-radius:4px;background:#DDE3EB;max-width:340px}
+.d-b .pbar i{display:block;height:100%;border-radius:4px;background:var(--gre)}
+.d-b .pmeta{font-size:11.5px;color:var(--mut);margin-top:6px;font-variant-numeric:tabular-nums}
+.d-b .shelfhead{display:flex;align-items:baseline;justify-content:space-between}
+.d-b .shelfhead h2{font-size:20px}
+.d-b .shelfhead span{font-size:12px;color:var(--mut);font-weight:600}
+.d-b .shelf{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:12px}
+.d-b .tcard{border:1px solid var(--ln);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.d-b .tcard .cov{aspect-ratio:16/10;position:relative;display:flex;align-items:flex-end;padding:12px;color:#fff}
+.d-b .tcard .cov .big{position:absolute;right:-6px;top:-18px;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:64px;opacity:.2;letter-spacing:-.06em}
+.d-b .tcard .cov em{position:absolute;top:11px;left:12px;font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:.1em;opacity:.85}
+.d-b .tcard .body{padding:12px 13px 14px;display:flex;flex-direction:column;gap:7px;flex:1}
+.d-b .tcard h4{margin:0;font-size:14px;font-weight:700;letter-spacing:-.015em;line-height:1.28;font-family:"Bricolage Grotesque",sans-serif}
+.d-b .tcard .sub{font-size:11.5px;color:var(--mut);font-variant-numeric:tabular-nums}
+.d-b .tcard .pbar{margin-top:auto;max-width:none}
+</style>
+
+<section class="wrap dir-head" data-dir-panel="b" hidden>
+  <div>
+    <span class="num">Direção B</span>
+    <h2>Sala de aula</h2>
+    <p>O herói é o <strong>progresso do aluno</strong>. Estrutura reconhecível de quem já usou Hotmart: prateleiras de trilhas com capas, "continue de onde parou", barras de progresso. A conversa com a IA é acolhedora e passo a passo, e responde como um professor responderia. Ocre queimado sobre azul-noite tira o clima de fintech e devolve o de sala de aula.</p>
+  </div>
+  <dl class="specs">
+    <div class="spec"><dt>Paleta</dt><dd><div class="swatches"><i class="sw" style="background:#FFFFFF"></i><i class="sw" style="background:#16233A"></i><i class="sw" style="background:#DD8534"></i><i class="sw" style="background:#1F6F6B"></i><i class="sw" style="background:#F1F4F8"></i></div></dd></div>
+    <div class="spec"><dt>Tipografia</dt><dd>Bricolage Grotesque · Plus Jakarta Sans</dd></div>
+    <div class="spec"><dt>Layout</dt><dd>Prateleiras, capas, chips, cantos generosos</dd></div>
+    <div class="spec"><dt>Risco</dt><dd>Amigável demais pode custar autoridade na hora de vender para escritório</dd></div>
+  </dl>
+</section>
+
+<div class="wrap">
+<!-- ===== B / LANDING ===== -->
+<div class="frame d-b" data-dir="b" data-screen="landing" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">praxistributaria.com.br</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="nav">
+      <div class="logo"><i></i>Praxis</div>
+      <nav><span data-on>Início</span><span>Trilhas</span><span>Assistente</span><span>Mentores</span><span>Planos</span></nav>
+      <div class="right"><span>Entrar</span><span class="pill acc">Começar agora</span></div>
+    </div>
+    <div class="hero">
+      <div>
+        <div class="chips"><span class="chip">IBS &amp; CBS</span><span class="chip">Split payment</span><span class="chip">Simples Nacional</span><span class="chip">Crédito acumulado</span></div>
+        <h1>Aprenda a reforma <mark>fazendo</mark>, com a IA do lado.</h1>
+        <p>Seis trilhas construídas por contadores que já estão atendendo cliente na transição — e um assistente que responde suas dúvidas do dia a dia usando exatamente esse material.</p>
+        <div class="ctas"><span class="pill acc">Assinar por R$ 189/mês</span><span class="pill out">Ver a primeira aula</span></div>
+      </div>
+      <div class="heroart">
+        <div class="cover c1"><span class="big">01</span><em>TRILHA</em><b>Fundamentos<br>do IBS e da CBS</b></div>
+        <div class="cover c2"><span class="big">02</span><em>TRILHA</em><b>Transição<br>2026–2033</b></div>
+        <div class="cover c3"><span class="big">03</span><em>TRILHA</em><b>Split payment<br>e fluxo de caixa</b></div>
+        <div class="cover c4"><span class="big">04</span><em>TRILHA</em><b>Simples Nacional<br>pós-reforma</b></div>
+      </div>
+    </div>
+    <div class="statband">
+      <div class="stat"><b>6</b><span>trilhas por assunto</span></div>
+      <div class="stat"><b>118</b><span>aulas práticas em vídeo</span></div>
+      <div class="stat"><b>340+</b><span>documentos na base do assistente</span></div>
+      <div class="stat"><b>7 dias</b><span>para pedir reembolso</span></div>
+    </div>
+    <div class="planos">
+      <div>
+        <h2>Escolha como quer entrar</h2>
+        <p>Mesma base de conteúdo nos dois planos. O anual libera as sessões de dúvidas ao vivo com os mentores.</p>
+      </div>
+      <div class="cards2">
+        <div class="plan">
+          <div class="tag">Mensal</div>
+          <div class="v">R$ 189<small> /mês</small></div>
+          <ul><li>Todas as trilhas e aulas</li><li>Assistente ilimitado</li><li>Cancela quando quiser</li></ul>
+          <span class="pill out">Assinar mensal</span>
+        </div>
+        <div class="plan on">
+          <div class="tag">Anual · 2 meses livres</div>
+          <div class="v">R$ 1.890<small> /ano</small></div>
+          <ul><li>Tudo do mensal</li><li>Sessão de dúvidas ao vivo</li><li>Modelos de parecer e memorando</li></ul>
+          <span class="pill acc">Assinar anual</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>Praxis Tributária · Protótipo · Pagamento simulado</span><span>Valores e conteúdo ilustrativos para avaliação de design</span></div>
+  </div></div>
+</div>
+
+<!-- ===== B / CHAT ===== -->
+<div class="frame d-b" data-dir="b" data-screen="chat" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxistributaria.com.br</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="nav">
+      <div class="logo"><i></i>Praxis</div>
+      <nav><span data-on>Assistente</span><span>Mentoria</span></nav>
+      <div class="right"><span style="color:#5D6B80">Aline B.</span><span class="avatar">AB</span></div>
+    </div>
+    <div class="app">
+      <aside class="side">
+        <a data-on><span>&#9679;</span>Assistente</a>
+        <a><span>&#9634;</span>Mentoria</a>
+        <a><span>&#9635;</span>Meus documentos</a>
+        <div class="sec">Conversas</div>
+        <div class="mini">Crédito acumulado de ICMS</div>
+        <div class="mini">Bar e restaurante: alíquota</div>
+        <div class="mini">Split em venda parcelada</div>
+        <div class="sec">Sua trilha</div>
+        <div class="mini" style="color:#1F6F6B;font-weight:700">Transição 2026–2033<br><span style="font-weight:500;color:#5D6B80">aula 2.3 · 38%</span></div>
+      </aside>
+      <main style="display:flex;flex-direction:column">
+        <div class="conv">
+          <div class="msg-u">Cliente é um restaurante em Curitiba, faturamento R$ 3,2 mi/ano, hoje no Simples. Vale a pena sair do Simples depois da reforma?</div>
+          <div class="msg-a">
+            <div class="bot">P</div>
+            <div class="bubble">
+              <h3>Depende de quem compra dele — e no caso de restaurante, normalmente não vale.</h3>
+              <p>A conta que importa não é a carga tributária dele. É se o <b>cliente dele aproveita crédito</b>. Restaurante vende para pessoa física, que não toma crédito de IBS/CBS, então ficar fora do Simples não gera vantagem competitiva — só aumenta a obrigação acessória.</p>
+              <div class="steps">
+                <div class="step"><i>1</i><span>Separe o faturamento por tipo de cliente. Se PJ que credita for menos de 20%, a discussão praticamente acaba aqui.</span></div>
+                <div class="step"><i>2</i><span>Lembre que o setor tem <b>redução de alíquota</b> prevista para bares e restaurantes, com regime específico — rode a simulação com o percentual reduzido, não com a alíquota de referência cheia.</span></div>
+                <div class="step"><i>3</i><span>Se ele ainda quiser sair, o Simples permite recolher IBS e CBS por fora mantendo o restante no regime. É o meio-termo que usamos em 2 dos 3 casos da aula.</span></div>
+              </div>
+              <p>Quer que eu monte a simulação com os números reais dele? Me passe a divisão PF/PJ do faturamento.</p>
+              <div class="srcrow">
+                <div class="srccard"><span class="kind k-norma">Norma</span><b>LC 214/2025</b><span>Regimes específicos e o regime do Simples Nacional.</span></div>
+                <div class="srccard"><span class="kind k-aula">Aula do mentor</span><b>Simples ou regular: a árvore de decisão</b><span>Trilha 04 · aula 1.2 · 19:35</span></div>
+                <div class="srccard"><span class="kind k-aula">Caso real</span><b>Restaurante em Curitiba, R$ 2,8 mi</b><span>Planilha comparativa dos 3 cenários</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="sugs"><span class="sug">Montar a simulação</span><span class="sug">E se ele vender para empresas?</span><span class="sug">Ver a aula 4.1.2</span></div>
+        </div>
+        <div class="box">
+          <div class="composer"><span>Descreva o caso do seu cliente: regime, UF, CNAE, faturamento…</span><span class="pill acc">Perguntar</span></div>
+          <div class="disc">O assistente responde com base no material dos mentores e cita a fonte. Confira antes de aplicar no cliente.</div>
+        </div>
+      </main>
+    </div>
+  </div></div>
+</div>
+
+<!-- ===== B / MENTORIA ===== -->
+<div class="frame d-b" data-dir="b" data-screen="mentoria" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxistributaria.com.br/mentoria</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="nav">
+      <div class="logo"><i></i>Praxis</div>
+      <nav><span>Assistente</span><span data-on>Mentoria</span></nav>
+      <div class="right"><span style="color:#5D6B80">Aline B.</span><span class="avatar">AB</span></div>
+    </div>
+    <div class="mwrap">
+      <div class="resume">
+        <div class="thumb"><div class="play">&#9654;</div></div>
+        <div>
+          <div class="lbl">Continue de onde parou</div>
+          <h3>Homologação de saldo credor: o protocolo, passo a passo</h3>
+          <p>Trilha 02 · Transição 2026–2033 · Módulo 2, aula 3 — faltam 13 min para fechar o módulo.</p>
+          <div class="pbar"><i style="width:38%"></i></div>
+          <div class="pmeta">38% da trilha · 9 de 23 aulas · 21:40 de duração</div>
+        </div>
+      </div>
+      <div>
+        <div class="shelfhead"><h2>Trilhas por assunto</h2><span>6 trilhas · atualizadas em setembro</span></div>
+        <div class="shelf">
+          <div class="tcard">
+            <div class="cov c1"><span class="big">01</span><em>FUNDAMENTOS</em><b></b></div>
+            <div class="body"><h4>Fundamentos do IBS e da CBS</h4><div class="sub">18 aulas · 4h12</div><div class="pbar"><i style="width:100%"></i></div><div class="sub" style="color:#1F6F6B;font-weight:700">Concluída</div></div>
+          </div>
+          <div class="tcard">
+            <div class="cov c2"><span class="big">02</span><em>TRANSIÇÃO</em><b></b></div>
+            <div class="body"><h4>Transição 2026–2033</h4><div class="sub">23 aulas · 6h48</div><div class="pbar"><i style="width:38%"></i></div><div class="sub">9 de 23 aulas</div></div>
+          </div>
+          <div class="tcard">
+            <div class="cov c3"><span class="big">03</span><em>CAIXA</em><b></b></div>
+            <div class="body"><h4>Split payment e fluxo de caixa</h4><div class="sub">14 aulas · 3h30</div><div class="pbar"><i style="width:0%"></i></div><div class="sub">Não iniciada</div></div>
+          </div>
+          <div class="tcard">
+            <div class="cov c4"><span class="big">04</span><em>SIMPLES</em><b></b></div>
+            <div class="body"><h4>Simples Nacional pós-reforma</h4><div class="sub">16 aulas · 3h58</div><div class="pbar"><i style="width:12%"></i></div><div class="sub">2 de 16 aulas</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="shelfhead"><h2>Sugerido para você</h2><span>com base nas suas últimas consultas</span></div>
+        <div class="shelf">
+          <div class="tcard">
+            <div class="cov c3"><span class="big">05</span><em>NOTA FISCAL</em><b></b></div>
+            <div class="body"><h4>Leiaute da nota com IBS, CBS e IS</h4><div class="sub">11 aulas · 2h44</div><div class="sub" style="color:#DD8534;font-weight:700">Você perguntou sobre isso 3×</div></div>
+          </div>
+          <div class="tcard">
+            <div class="cov c1"><span class="big">06</span><em>SETORIAL</em><b></b></div>
+            <div class="body"><h4>Regimes específicos: bar, hotel e transporte</h4><div class="sub">13 aulas · 3h06</div><div class="sub" style="color:#DD8534;font-weight:700">Novo módulo esta semana</div></div>
+          </div>
+          <div class="tcard">
+            <div class="cov c2"><span class="big">07</span><em>AO VIVO</em><b></b></div>
+            <div class="body"><h4>Plantão de dúvidas · 18 set, 19h</h4><div class="sub">Com Rafael Doretto, CRC 1PR-062.441</div><div class="sub" style="color:#1F6F6B;font-weight:700">Sua vaga está garantida</div></div>
+          </div>
+          <div class="tcard">
+            <div class="cov c4"><span class="big">08</span><em>FERRAMENTA</em><b></b></div>
+            <div class="body"><h4>Simulador de carga na transição</h4><div class="sub">Planilha + aula de uso · 26 min</div><div class="sub">Baixada por 1.204 alunos</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>Praxis Tributária · Mentoria</span><span>Conteúdo ilustrativo para avaliação de design</span></div>
+  </div></div>
+</div>
+</div>
+
+<style>
+/* ============ DIREÇÃO C — COPILOTO ============ */
+.d-c{--bg:#0B1316;--srf:#111C20;--srf2:#16262B;--fg:#E3ECEE;--mut:#8CA1A6;--ln:#213339;--acc:#F2C14E;--acc2:#5FB0A5;--dim:#6B8085}
+.d-c .chrome{background:#0A1013;border-bottom-color:#1B2A2F}
+.d-c .chrome .lights i{background:#3A4E54}
+.d-c .chrome .url{background:#121E22;color:#8CA1A6;border:1px solid #1F3037}
+.d-c .mock{background:var(--bg);color:var(--fg);font-family:"Archivo",system-ui,sans-serif}
+.d-c h1,.d-c h2,.d-c h3{font-family:"Archivo",sans-serif;font-weight:700;letter-spacing:-.035em;margin:0;text-wrap:balance}
+.d-c .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.d-c .nav{display:flex;align-items:center;gap:24px;padding:13px 30px;border-bottom:1px solid var(--ln)}
+.d-c .logo{font-weight:700;font-size:16px;letter-spacing:-.04em;display:flex;align-items:center;gap:8px}
+.d-c .logo i{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 3px rgba(242,193,78,.16)}
+.d-c .nav nav{display:flex;gap:20px;font-size:12.5px;color:var(--mut)}
+.d-c .nav nav span[data-on]{color:var(--fg)}
+.d-c .nav .right{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:12.5px;color:var(--mut)}
+.d-c .key{background:var(--acc);color:#1A1305;padding:7px 15px;border-radius:5px;font-size:12.5px;font-weight:600;display:inline-block}
+.d-c .key.line{background:transparent;color:var(--fg);border:1px solid var(--ln)}
+.d-c .hero{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding:52px 30px 44px;align-items:center}
+.d-c .hero h1{font-size:44px;line-height:1.02;max-width:15ch;margin-bottom:16px}
+.d-c .hero h1 span{color:var(--acc)}
+.d-c .hero p{color:var(--mut);font-size:15px;max-width:46ch;line-height:1.62;margin:0 0 24px}
+.d-c .eyebrow{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2);margin-bottom:16px}
+.d-c .ctas{display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--mut)}
+.d-c .demo{background:var(--srf);border:1px solid var(--ln);border-radius:10px;overflow:hidden}
+.d-c .demo .bar{display:flex;align-items:center;gap:8px;padding:9px 13px;border-bottom:1px solid var(--ln);font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);letter-spacing:.08em}
+.d-c .demo .bar b{color:var(--acc2);font-weight:400}
+.d-c .demo .body{padding:16px}
+.d-c .demo .q{font-size:13px;color:var(--mut);border-left:2px solid var(--ln);padding-left:11px;margin-bottom:14px;line-height:1.5}
+.d-c .demo .a{font-size:13.5px;line-height:1.6}
+.d-c .demo .a b{color:var(--acc)}
+.d-c .caret{display:inline-block;width:7px;height:14px;background:var(--acc2);vertical-align:-2px;margin-left:2px}
+.d-c .refs{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.d-c .ref{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--acc2);border:1px solid #2A4A48;background:rgba(95,176,165,.08);padding:3px 7px;border-radius:3px}
+.d-c .band{border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);padding:14px 30px;display:flex;gap:26px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);letter-spacing:.06em;overflow:hidden;white-space:nowrap}
+.d-c .band b{color:var(--mut);font-weight:400}
+.d-c .grid3{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--ln)}
+.d-c .cell{padding:26px 30px;border-right:1px solid var(--ln)}
+.d-c .cell:last-child{border-right:0}
+.d-c .cell .n{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--acc);letter-spacing:.1em;margin-bottom:10px}
+.d-c .cell h3{font-size:17px;margin-bottom:8px}
+.d-c .cell p{color:var(--mut);font-size:13px;line-height:1.58;margin:0}
+.d-c .pricing{padding:30px;display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+.d-c .pricing .v{font-size:34px;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.d-c .pricing .v small{font-size:13px;font-weight:400;color:var(--mut);letter-spacing:0}
+.d-c .pricing ul{list-style:none;margin:0;padding:0;display:flex;gap:22px;font-size:12.5px;color:var(--mut);flex-wrap:wrap}
+.d-c .pricing li::before{content:"→ ";color:var(--acc2)}
+.d-c .foot{padding:14px 30px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);border-top:1px solid var(--ln);display:flex;justify-content:space-between;letter-spacing:.05em}
+
+.d-c .app{display:grid;grid-template-columns:52px 218px minmax(0,1fr);min-height:620px}
+.d-c .icons{border-right:1px solid var(--ln);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:6px;background:#091013}
+.d-c .ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:14px}
+.d-c .ico[data-on]{background:var(--srf2);color:var(--acc)}
+.d-c .list{border-right:1px solid var(--ln);padding:14px 0;background:#0D171A}
+.d-c .list h4{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 14px 8px;font-weight:400}
+.d-c .li{padding:9px 14px;font-size:12.5px;color:var(--mut);line-height:1.35;border-left:2px solid transparent}
+.d-c .li[data-on]{background:var(--srf2);border-left-color:var(--acc);color:var(--fg)}
+.d-c .li em{display:block;font-style:normal;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dim);margin-top:3px}
+.d-c .pane{display:flex;flex-direction:column}
+.d-c .panehead{padding:12px 26px;border-bottom:1px solid var(--ln);display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--mut)}
+.d-c .modes{margin-left:auto;display:flex;gap:2px;background:#0D171A;border:1px solid var(--ln);border-radius:6px;padding:2px}
+.d-c .mode{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;padding:5px 10px;border-radius:4px;color:var(--dim)}
+.d-c .mode[data-on]{background:var(--srf2);color:var(--acc)}
+.d-c .stream{padding:24px 26px;display:flex;flex-direction:column;gap:18px;flex:1}
+.d-c .uq{font-size:14.5px;line-height:1.5;max-width:66ch}
+.d-c .uq em{display:block;font-style:normal;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;color:var(--dim);margin-bottom:6px}
+.d-c .out{max-width:70ch;font-size:14px;line-height:1.65;color:#CBDADD}
+.d-c .out h3{font-size:17px;color:var(--fg);margin-bottom:10px}
+.d-c .out p{margin:0 0 12px}
+.d-c .out b{color:var(--fg)}
+.d-c .in{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--acc2);vertical-align:super}
+.d-c .fluxo{border:1px solid var(--ln);border-radius:8px;background:var(--srf);margin:4px 0 14px;overflow:hidden}
+.d-c .fluxo .fh{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--dim);padding:8px 13px;border-bottom:1px solid var(--ln);display:flex;justify-content:space-between}
+.d-c .frow{display:grid;grid-template-columns:1fr 96px 96px;gap:12px;padding:8px 13px;font-size:12.5px;border-bottom:1px solid #18272C;font-variant-numeric:tabular-nums}
+.d-c .frow:last-child{border-bottom:0}
+.d-c .frow span:not(:first-child){text-align:right;font-family:"JetBrains Mono",monospace;font-size:11.5px}
+.d-c .frow .neg{color:#E48A7A}
+.d-c .frow .pos{color:var(--acc2)}
+.d-c .frow.tot{background:#0F1D21;color:var(--fg);font-weight:600}
+.d-c .cites{border-top:1px solid var(--ln);padding-top:12px;display:grid;gap:8px}
+.d-c .cites .ch{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--dim)}
+.d-c .cite{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:12px;color:var(--mut);line-height:1.45}
+.d-c .cite i{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--acc2)}
+.d-c .cite b{color:var(--fg);font-weight:500}
+.d-c .prompt{margin:0 26px 22px;border:1px solid var(--ln);border-radius:8px;background:var(--srf);padding:12px 14px;display:flex;align-items:center;gap:12px;font-size:13px;color:var(--dim)}
+.d-c .prompt .key{margin-left:auto;padding:6px 14px}
+.d-c .kbd{font-family:"JetBrains Mono",monospace;font-size:9.5px;border:1px solid var(--ln);border-radius:3px;padding:2px 5px;color:var(--dim)}
+
+.d-c .mgrid{display:grid;grid-template-columns:minmax(0,1.35fr) 320px;min-height:620px}
+.d-c .mleft{padding:22px 26px 26px;border-right:1px solid var(--ln)}
+.d-c .vid{aspect-ratio:16/9;border-radius:8px;background:radial-gradient(120% 100% at 20% 0%,#1D3238,#0A1215);border:1px solid var(--ln);position:relative;display:flex;align-items:center;justify-content:center}
+.d-c .vid .play{width:48px;height:48px;border-radius:50%;background:var(--acc);color:#1A1305;display:flex;align-items:center;justify-content:center;font-size:15px;padding-left:3px}
+.d-c .vid .tl{position:absolute;left:14px;right:14px;bottom:12px;height:3px;background:#22343A;border-radius:2px}
+.d-c .vid .tl i{display:block;height:100%;width:34%;background:var(--acc);border-radius:2px}
+.d-c .vmeta{display:flex;align-items:baseline;gap:12px;margin-top:16px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--dim)}
+.d-c .mleft h2{font-size:22px;margin:8px 0 8px}
+.d-c .mleft>p{color:var(--mut);font-size:13.5px;line-height:1.6;margin:0 0 20px;max-width:60ch}
+.d-c .askbox{border:1px solid #2A4A48;background:rgba(95,176,165,.07);border-radius:8px;padding:13px 15px;display:flex;align-items:center;gap:14px}
+.d-c .askbox p{margin:0;font-size:13px;color:#BFD6D3;line-height:1.45}
+.d-c .askbox .key{flex:none}
+.d-c .modlist{margin-top:22px;border-top:1px solid var(--ln)}
+.d-c .modrow{display:grid;grid-template-columns:1fr auto;padding:11px 0;border-bottom:1px solid var(--ln);font-size:13px;align-items:baseline;color:var(--mut)}
+.d-c .modrow b{color:var(--fg);font-weight:500}
+.d-c .modrow .mm{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim)}
+.d-c .mright{padding:18px 20px;display:flex;flex-direction:column;gap:12px;background:#0D171A}
+.d-c .mright h4{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0;font-weight:400}
+.d-c .tr{display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:12.5px;line-height:1.5;color:var(--mut);padding:7px 0;border-top:1px solid #18272C}
+.d-c .tr time{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim)}
+.d-c .tr[data-on]{color:var(--fg)}
+.d-c .tr[data-on] time{color:var(--acc)}
+.d-c .anx{border:1px solid var(--ln);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--mut);display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.d-c .anx b{color:var(--fg);font-weight:500;display:block}
+.d-c .anx span{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--acc2)}
+</style>
+
+<section class="wrap dir-head" data-dir-panel="c" hidden>
+  <div>
+    <span class="num">Direção C</span>
+    <h2>Copiloto</h2>
+    <p>O herói é a <strong>ferramenta de trabalho</strong>. Interface escura de painel profissional, tipografia compacta, monoespaçada nos dados e nas citações. O chat tem modos — Prático, Norma, Cálculo — e devolve tabela de fluxo de caixa, não só texto. Na Mentoria, a transcrição fica ao lado do vídeo e você pergunta sobre o trecho que está assistindo: é a única direção em que os dois sistemas viram um só.</p>
+  </div>
+  <dl class="specs">
+    <div class="spec"><dt>Paleta</dt><dd><div class="swatches"><i class="sw" style="background:#0B1316"></i><i class="sw" style="background:#16262B"></i><i class="sw" style="background:#E3ECEE"></i><i class="sw" style="background:#F2C14E"></i><i class="sw" style="background:#5FB0A5"></i></div></dd></div>
+    <div class="spec"><dt>Tipografia</dt><dd>Archivo · JetBrains Mono</dd></div>
+    <div class="spec"><dt>Layout</dt><dd>Painéis, trilho de ícones, densidade de IDE</dd></div>
+    <div class="spec"><dt>Risco</dt><dd>Escuro assusta parte do público contábil mais tradicional</dd></div>
+  </dl>
+</section>
+
+<div class="wrap">
+<!-- ===== C / LANDING ===== -->
+<div class="frame d-c" data-dir="c" data-screen="landing" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">praxistributaria.com.br</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="nav">
+      <div class="logo"><i></i>Praxis</div>
+      <nav><span data-on>Produto</span><span>Mentoria</span><span>Base</span><span>Preço</span></nav>
+      <div class="right"><span>Entrar</span><span class="key">Criar conta</span></div>
+    </div>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Copiloto fiscal · reforma tributária</div>
+        <h1>O que fazer, <span>não</span> o que a lei diz.</h1>
+        <p>Você já leu a LC 214. O que falta é como resolver: qual campo preencher, qual conta bater, o que responder para o cliente na segunda de manhã. O Praxis foi treinado nos procedimentos e nos casos dos nossos mentores — e mostra a fonte de cada passo.</p>
+        <div class="ctas"><span class="key">Começar — R$ 189/mês</span><span class="key line">Entrar</span><span>7 dias para reembolso</span></div>
+      </div>
+      <div class="demo">
+        <div class="bar"><span>CONSULTA · MODO PRÁTICO</span><b>&#9679; base atualizada 04.09.2026</b></div>
+        <div class="body">
+          <div class="q">Split payment começa a valer para o meu cliente do comércio. O que muda no caixa dele no primeiro mês?</div>
+          <div class="a">O impacto real não é a carga — é o <b>descasamento</b>. Hoje ele recebe 100% da venda e recolhe no mês seguinte; com split, o IBS e a CBS saem no ato da liquidação. No primeiro mês ele paga o tributo do mês anterior <b>e</b> perde a retenção do mês corrente<span class="caret"></span></div>
+          <div class="refs"><span class="ref">[1] LC 214/2025 art. 31</span><span class="ref">[2] Aula 3.1 — Doretto</span><span class="ref">[3] Caso: atacadista RS</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="band"><span><b>IBS</b> imposto sobre bens e serviços</span><span><b>CBS</b> contribuição sobre bens e serviços</span><span><b>IS</b> imposto seletivo</span><span><b>ADCT art. 134</b> saldo credor</span><span><b>2026</b> ano de teste</span><span><b>2033</b> regime pleno</span></div>
+    <div class="grid3">
+      <div class="cell"><div class="n">01 / PERGUNTE</div><h3>Com o caso na mão</h3><p>Regime, UF, CNAE e valores. A resposta vem no formato do problema: passo a passo, tabela de caixa ou minuta de parecer, conforme o modo escolhido.</p></div>
+      <div class="cell"><div class="n">02 / CONFIRA</div><h3>Toda afirmação citada</h3><p>Cada trecho aponta para a norma ou para o material do mentor que o sustenta, com o parágrafo original ao lado. Sem fonte, o assistente diz que não sabe.</p></div>
+      <div class="cell"><div class="n">03 / APROFUNDE</div><h3>A Mentoria no mesmo lugar</h3><p>Quando a dúvida vira tema, o copiloto te joga direto no minuto da aula que trata dela. Seis trilhas, 118 aulas, atualizadas a cada norma nova.</p></div>
+    </div>
+    <div class="pricing">
+      <div><div class="v">R$ 189<small> /mês</small></div><div style="font-size:12px;color:#8CA1A6">ou R$ 1.890/ano · pagamento simulado nesta POC</div></div>
+      <ul><li>consultas ilimitadas</li><li>6 trilhas e 118 aulas</li><li>modelos de parecer</li><li>base atualizada semanalmente</li></ul>
+      <span class="key" style="margin-left:auto">Criar conta</span>
+    </div>
+    <div class="foot"><span>PRAXIS TRIBUTÁRIA · PROTÓTIPO</span><span>CONTEÚDO ILUSTRATIVO PARA AVALIAÇÃO DE DESIGN</span></div>
+  </div></div>
+</div>
+
+<!-- ===== C / CHAT ===== -->
+<div class="frame d-c" data-dir="c" data-screen="chat" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxistributaria.com.br</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="app">
+      <aside class="icons">
+        <div class="ico" data-on>&#9679;</div>
+        <div class="ico">&#9636;</div>
+        <div class="ico">&#9635;</div>
+        <div class="ico" style="margin-top:auto">AB</div>
+      </aside>
+      <aside class="list">
+        <h4>Consultas</h4>
+        <div class="li" data-on>Split payment no caixa do atacadista<em>HOJE 09:12 · MODO CÁLCULO</em></div>
+        <div class="li">Saldo credor de ICMS na transição<em>ONTEM · MODO PRÁTICO</em></div>
+        <div class="li">Restaurante: sair do Simples?<em>02 SET · MODO PRÁTICO</em></div>
+        <div class="li">Imposto Seletivo em refrigerante<em>28 AGO · MODO NORMA</em></div>
+        <h4 style="margin-top:18px">Mentoria</h4>
+        <div class="li">Transição 2026–2033<em>AULA 2.3 · 38%</em></div>
+      </aside>
+      <main class="pane">
+        <div class="panehead">
+          <span style="color:#E3ECEE">Split payment no caixa do atacadista</span>
+          <div class="modes"><span class="mode">PRÁTICO</span><span class="mode" data-on>CÁLCULO</span><span class="mode">NORMA</span></div>
+        </div>
+        <div class="stream">
+          <div class="uq"><em>PERGUNTA</em>Atacadista de material de construção no RS, faturamento mensal R$ 900 mil, prazo médio de recebimento 32 dias. Quanto de capital de giro ele precisa no primeiro mês de split payment?</div>
+          <div class="out">
+            <h3>Cerca de R$ 238 mil de caixa extra no mês de virada.</h3>
+            <p>No mês em que o split entra, ele acumula duas saídas: o tributo apurado do mês anterior, que vence normalmente, e a retenção na liquidação das vendas do mês corrente <span class="in">[1]</span>. A partir do segundo mês a coisa se normaliza — o efeito é <b>de caixa, não de carga</b>.</p>
+            <div class="fluxo">
+              <div class="fh"><span>SIMULAÇÃO · MÊS DE VIRADA</span><span>BASE R$ 900.000 · ALÍQ. REF. 26,5%</span></div>
+              <div class="frow"><span>Recebimento bruto de vendas</span><span class="pos">+900.000</span><span>&nbsp;</span></div>
+              <div class="frow"><span>Retenção no ato (IBS + CBS, líquida de crédito)</span><span class="neg">−119.250</span><span>13,3%</span></div>
+              <div class="frow"><span>Apuração do mês anterior (regime antigo)</span><span class="neg">−118.700</span><span>vencida</span></div>
+              <div class="frow tot"><span>Necessidade adicional de giro</span><span class="neg">−237.950</span><span>1 mês</span></div>
+            </div>
+            <p>O que fazemos na prática nos casos da trilha: antecipar a negociação de prazo com os dois maiores fornecedores em 15 dias e deixar a linha de capital de giro pré-aprovada antes da virada <span class="in">[2]</span>. Quem esperou o extrato do primeiro mês para reagir pagou juros de conta garantida sem precisar.</p>
+            <div class="cites">
+              <div class="ch">FONTES</div>
+              <div class="cite"><i>[1]</i><span><b>LC 214/2025, art. 31</b> — recolhimento na liquidação financeira. Trecho: "…o valor do imposto será segregado no momento da liquidação…"</span></div>
+              <div class="cite"><i>[2]</i><span><b>Trilha 03 · aula 3.3, 12:40</b> — Projeção de capital de giro em 12 meses. Planilha do atacadista de Caxias do Sul anexa à aula.</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="prompt"><span>Descreva o caso — regime, UF, CNAE, faturamento e prazos</span><span class="kbd">⌘K</span><span class="key">Consultar</span></div>
+      </main>
+    </div>
+  </div></div>
+</div>
+
+<!-- ===== C / MENTORIA ===== -->
+<div class="frame d-c" data-dir="c" data-screen="mentoria" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxistributaria.com.br/mentoria/transicao/2-3</div></div>
+  <div class="scroller"><div class="mock">
+    <div class="nav">
+      <div class="logo"><i></i>Praxis</div>
+      <nav><span>Assistente</span><span data-on>Mentoria</span><span>Documentos</span></nav>
+      <div class="right"><span>Trilha 02 · 38%</span><span>Aline B.</span></div>
+    </div>
+    <div class="mgrid">
+      <section class="mleft">
+        <div class="vid"><div class="play">&#9654;</div><div class="tl"><i></i></div></div>
+        <div class="vmeta"><span>TRILHA 02 / MÓDULO 2 / AULA 3</span><span>07:22 / 21:40</span></div>
+        <h2>Homologação de saldo credor: o protocolo, passo a passo</h2>
+        <p>Rafael abre o processo real de uma distribuidora de bebidas de SP com R$ 1,4 mi de saldo, do levantamento contábil ao protocolo. No fim da aula você monta o dossiê do seu cliente com o mesmo checklist.</p>
+        <div class="askbox">
+          <p>Você está em <b style="color:#F2C14E">07:22</b>, onde ele fala do prazo de 18 a 30 meses em SP. Alguma dúvida sobre este trecho?</p>
+          <span class="key">Perguntar ao copiloto</span>
+        </div>
+        <div class="modlist">
+          <div class="modrow"><span><b>2.1</b> Levantar o saldo real na contabilidade</span><span class="mm">19:04 · VISTO</span></div>
+          <div class="modrow"><span><b>2.2</b> Por que 240 parcelas mudam o valuation</span><span class="mm">15:12 · VISTO</span></div>
+          <div class="modrow"><span style="color:#F2C14E"><b style="color:#F2C14E">2.3</b> Homologação: o protocolo, passo a passo</span><span class="mm" style="color:#F2C14E">21:40 · AGORA</span></div>
+          <div class="modrow"><span><b>2.4</b> Transferência entre estabelecimentos</span><span class="mm">24:18</span></div>
+          <div class="modrow"><span><b>2.5</b> Compensação com terceiros: quando cabe</span><span class="mm">23:50</span></div>
+        </div>
+      </section>
+      <aside class="mright">
+        <h4>Transcrição</h4>
+        <div class="tr"><time>06:48</time><span>…o erro mais comum é levantar o saldo pelo SPED e parar por aí. O fisco vai pedir a memória de cálculo por período de apuração.</span></div>
+        <div class="tr" data-on><time>07:22</time><span>Em São Paulo, hoje, o rito de homologação leva de 18 a 30 meses. E essa fila só cresce conforme 2032 se aproxima — quem protocolar em 2030 vai pegar uma fila muito pior.</span></div>
+        <div class="tr"><time>08:05</time><span>Então a recomendação é: protocola agora, mesmo que o valor ainda esteja sendo depurado. Você complementa depois.</span></div>
+        <div class="tr"><time>08:51</time><span>Vou abrir aqui o protocolo do caso real. Repare no campo de fundamentação…</span></div>
+        <h4 style="margin-top:8px">Anexos da aula</h4>
+        <div class="anx"><div><b>Planilha de levantamento</b>saldo credor por período</div><span>XLSX</span></div>
+        <div class="anx"><div><b>Modelo de petição — SP</b>com fundamentação preenchida</div><span>DOCX</span></div>
+        <div class="anx"><div><b>Checklist do dossiê</b>1 página, para imprimir</div><span>PDF</span></div>
+      </aside>
+    </div>
+    <div class="foot"><span>PRAXIS TRIBUTÁRIA · MENTORIA</span><span>CONTEÚDO ILUSTRATIVO PARA AVALIAÇÃO DE DESIGN</span></div>
+  </div></div>
+</div>
+</div>
+
+<style>
+.closing{border-top:1px solid var(--line);margin-top:8px;padding:38px 0 60px}
+.closing h2{font-size:22px;letter-spacing:-.02em;margin:0 0 6px;font-weight:600}
+.closing>.wrap>p{color:var(--muted);max-width:64ch;margin:0 0 26px;font-size:14.5px}
+.mix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:880px){.mix{grid-template-columns:1fr}}
+.mixcard{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--srf)}
+.mixcard h3{margin:0 0 8px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.mixcard h3 i{width:8px;height:8px;border-radius:50%;flex:none}
+.mixcard p{margin:0;font-size:13px;color:var(--muted);line-height:1.55}
+.decide{margin-top:26px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.decide .dh{background:var(--acc-soft);color:var(--acc);font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:9px 16px}
+.decide .drow{display:grid;grid-template-columns:170px 1fr;gap:18px;padding:12px 16px;border-top:1px solid var(--line);font-size:13.5px;align-items:baseline}
+.decide .drow b{font-weight:600}
+.decide .drow span{color:var(--muted)}
+</style>
+
+<section class="closing">
+  <div class="wrap">
+    <h2>Como escolher</h2>
+    <p>As três compartilham o mesmo fluxo — landing, compra simulada, login, chat como tela inicial e o menu <strong>Mentoria</strong> levando ao ambiente de trilhas. O que muda é a promessa que a interface faz antes de qualquer texto ser lido.</p>
+    <div class="mix">
+      <div class="mixcard"><h3><i style="background:#1B4D8F"></i>A · Escritório</h3><p>Escolha se o comprador é o dono do escritório contábil e a objeção principal é "posso confiar nessa resposta?". O painel de fontes fixo é o argumento de venda.</p></div>
+      <div class="mixcard"><h3><i style="background:#DD8534"></i>B · Sala de aula</h3><p>Escolha se a venda é por infoproduto, com tráfego pago e prova social, e o comprador é o contador jovem que já compra curso online. Converte melhor na landing.</p></div>
+      <div class="mixcard"><h3><i style="background:#F2C14E"></i>C · Copiloto</h3><p>Escolha se a IA é o produto e a mentoria é o conteúdo que a alimenta. É a mais moderna e a que melhor funde os dois sistemas — e a mais arriscada com público tradicional.</p></div>
+    </div>
+    <div class="decide">
+      <div class="dh">Combinações que funcionam</div>
+      <div class="drow"><b>B na frente, C dentro</b><span>Landing calorosa que vende bem, aplicativo escuro e denso para quem já pagou. É o arranjo mais comum em produto sério com venda por conteúdo.</span></div>
+      <div class="drow"><b>A na frente, A dentro</b><span>Coerência total. Melhor caminho se a venda for consultiva, por indicação entre escritórios, e não por anúncio.</span></div>
+      <div class="drow"><b>Não misture A e B</b><span>A serifa institucional brigando com capa colorida de curso passa a impressão de duas empresas diferentes.</span></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var dir = "a", screen = "landing";
+  function apply(){
+    document.querySelectorAll("[data-dir-panel]").forEach(function(el){
+      el.hidden = el.getAttribute("data-dir-panel") !== dir;
+    });
+    document.querySelectorAll(".frame[data-dir]").forEach(function(el){
+      el.hidden = !(el.getAttribute("data-dir") === dir && el.getAttribute("data-screen") === screen);
+    });
+    document.querySelectorAll(".tab[data-dir]").forEach(function(b){
+      b.setAttribute("aria-selected", String(b.getAttribute("data-dir") === dir));
+    });
+    document.querySelectorAll(".tab[data-screen]").forEach(function(b){
+      b.setAttribute("aria-selected", String(b.getAttribute("data-screen") === screen));
+    });
+  }
+  document.querySelectorAll(".tab[data-dir]").forEach(function(b){
+    b.addEventListener("click", function(){ dir = b.getAttribute("data-dir"); apply(); });
+  });
+  document.querySelectorAll(".tab[data-screen]").forEach(function(b){
+    b.addEventListener("click", function(){ screen = b.getAttribute("data-screen"); apply(); });
+  });
+  apply();
+})();
+</script>

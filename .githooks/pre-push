@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Portão de push — frontend Praxis.
+# A suíte INTEIRA e o build de produção precisam passar antes de qualquer push.
+# Vale para pessoa e para IA. Ver CLAUDE.md §2.8 e docs/padroes-frontend.md §8.2.
+#
+# Ative uma vez por clone:
+#   git config core.hooksPath .githooks
+
+set -e
+
+printf '\n[pre-push] Rodando a suite inteira antes do push...\n\n'
+
+if ! npm test; then
+  printf '\n[pre-push] BLOQUEADO: a suite de testes nao passou.\n'
+  printf '[pre-push] Corrija antes de dar push. Nao marque teste como skip.\n'
+  printf '[pre-push] Se a falha for em area que voce nao tocou, avise a pessoa\n'
+  printf '[pre-push] responsavel em vez de contornar.\n\n'
+  exit 1
+fi
+
+printf '\n[pre-push] Testes verdes. Rodando o build de producao...\n\n'
+
+if ! npm run build; then
+  printf '\n[pre-push] BLOQUEADO: o build de producao falhou.\n'
+  printf '[pre-push] A Vercel usa o mesmo build — push assim quebra o deploy.\n\n'
+  exit 1
+fi
+
+printf '\n[pre-push] Tudo verde. Push liberado.\n\n'

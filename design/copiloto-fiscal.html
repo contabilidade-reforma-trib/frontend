@@ -1,0 +1,1023 @@
+<title>Copiloto Fiscal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+/* ===== WRAPPER ===== */
+:root{
+  --paper:#FBFAF8;--ink:#131A21;--muted:#5F6D7A;--line:#E2E6EA;--srf:#FFFFFF;
+  --acc:#1F5FAE;--acc-soft:#E8F0F9;--shadow:0 1px 2px rgba(11,26,43,.06),0 14px 34px -20px rgba(11,26,43,.35);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#101317;--ink:#E9EDF1;--muted:#94A2AF;--line:#272C32;--srf:#171B20;
+  --acc:#75AEE8;--acc-soft:#18242F;--shadow:0 1px 2px rgba(0,0,0,.4),0 16px 36px -20px rgba(0,0,0,.75);
+}}
+:root[data-theme="dark"]{
+  --paper:#101317;--ink:#E9EDF1;--muted:#94A2AF;--line:#272C32;--srf:#171B20;
+  --acc:#75AEE8;--acc-soft:#18242F;--shadow:0 1px 2px rgba(0,0,0,.4),0 16px 36px -20px rgba(0,0,0,.75);
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1260px;margin:0 auto;padding:0 24px}
+.masthead{padding:42px 0 24px;border-bottom:1px solid var(--line)}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin:0 0 13px}
+.masthead h1{font-family:"Archivo",sans-serif;font-weight:700;font-size:clamp(27px,4vw,42px);line-height:1.06;letter-spacing:-.035em;margin:0 0 14px;text-wrap:balance;max-width:22ch}
+.lede{margin:0;max-width:70ch;color:var(--muted);font-size:15.5px}
+.pal{display:flex;gap:16px;flex-wrap:wrap;margin-top:22px}
+.palgrp{display:flex;flex-direction:column;gap:5px}
+.palgrp .sws{display:flex;gap:4px}
+.palgrp i{width:26px;height:22px;border-radius:4px;border:1px solid rgba(0,0,0,.14);display:block}
+.palgrp span{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.picker{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);padding:11px 0}
+.tabs{display:flex;gap:5px;flex-wrap:wrap}
+.tab{appearance:none;border:1px solid var(--line);background:var(--srf);color:var(--muted);font:inherit;font-size:12.5px;padding:7px 14px;border-radius:7px;cursor:pointer;transition:border-color .15s,color .15s}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{border-color:var(--ink);color:var(--ink);font-weight:600}
+.tab:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.caption{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:30px;padding:28px 0 18px;align-items:start}
+@media (max-width:840px){.caption{grid-template-columns:1fr;gap:16px}}
+.caption h2{font-family:"Archivo",sans-serif;margin:0 0 8px;font-size:23px;letter-spacing:-.028em;font-weight:700}
+.caption .n{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:9px}
+.caption p{margin:0;color:var(--muted);font-size:14.5px;max-width:62ch}
+.keys{display:grid;gap:8px;font-size:13px}
+.key-r{display:grid;grid-template-columns:96px 1fr;gap:12px;border-top:1px solid var(--line);padding-top:8px;align-items:baseline}
+.key-r dt{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.key-r dd{margin:0}
+.frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:52px;background:var(--srf)}
+.chrome{display:flex;align-items:center;gap:12px;padding:9px 14px;border-bottom:1px solid rgba(0,0,0,.14);background:#0A141F}
+.chrome .lights{display:flex;gap:6px}
+.chrome .lights i{width:9px;height:9px;border-radius:50%;display:block;background:#2C4A66}
+.chrome .url{font-family:"JetBrains Mono",monospace;font-size:11px;padding:4px 12px;border-radius:5px;flex:1;max-width:380px;text-align:center;background:#0E1D2B;color:#7E97AC;border:1px solid #1C3348}
+.scroller{overflow-x:auto}
+.mock{min-width:960px;font-size:13px;line-height:1.5}
+
+/* ===== TOKENS DO PRODUTO ===== */
+.mock{
+  --navy:#0B1A2B;--navy2:#112741;--navy3:#173252;--lnd:#1E3E5E;
+  --blue:#2E7DE0;--blue2:#5AA3F0;--green:#1FA97C;--amber:#F0B429;--red:#E0644F;
+  --wht:#FFFFFF;--ppr:#F3F7FB;--ink:#0B1A2B;--mut:#5A7183;--lnl:#DCE5EF;--dim:#7C93A6;
+  font-family:"Archivo",system-ui,sans-serif;
+}
+.mock h1,.mock h2,.mock h3,.mock h4{font-family:"Archivo",sans-serif;margin:0;letter-spacing:-.032em;font-weight:700;text-wrap:balance}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+
+/* ===== LANDING (clara) ===== */
+.lp{background:var(--wht);color:var(--ink)}
+.lp .top{display:flex;align-items:center;gap:24px;padding:13px 34px;border-bottom:1px solid var(--lnl);background:var(--wht)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;letter-spacing:-.04em}
+.brand i{width:24px;height:24px;border-radius:7px;background:var(--navy);position:relative;display:block}
+.brand i::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--amber)}
+.lp .top nav{display:flex;gap:19px;font-size:13px;color:var(--mut);font-weight:500}
+.lp .top .r{margin-left:auto;display:flex;gap:13px;align-items:center;font-size:13px;font-weight:600}
+.btn{display:inline-block;padding:10px 19px;border-radius:8px;font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+.btn.amber{background:var(--amber);color:#2A1D02}
+.btn.navy{background:var(--navy);color:#fff}
+.btn.line{border:1.5px solid var(--lnl);color:var(--ink)}
+.btn.blue{background:var(--blue);color:#fff}
+.lp .hero{display:grid;grid-template-columns:1.02fr .98fr;gap:38px;padding:44px 34px 36px;align-items:center;background:linear-gradient(180deg,#F6FAFE,#FFFFFF)}
+.eyeb{display:inline-flex;align-items:center;gap:7px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:#EAF2FD;border:1px solid #CFE1F8;padding:5px 10px;border-radius:20px;margin-bottom:16px}
+.eyeb b{color:var(--green);font-weight:500}
+.lp .hero h1{font-size:41px;line-height:1.03;max-width:16ch;margin-bottom:15px;font-weight:800}
+.lp .hero h1 u{text-decoration:none;background:linear-gradient(180deg,transparent 62%,#FDECC4 62%)}
+.lp .hero>div>p{color:var(--mut);font-size:15.5px;line-height:1.62;max-width:44ch;margin:0 0 20px}
+.lp .ctas{display:flex;gap:11px;align-items:center;flex-wrap:wrap}
+.lp .microcopy{font-size:11.5px;color:var(--dim);margin-top:11px}
+/* demo escura dentro da landing clara */
+.demo{background:var(--navy);border-radius:12px;overflow:hidden;box-shadow:0 24px 48px -26px rgba(11,26,43,.6);border:1px solid var(--navy3)}
+.demo .dh{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--navy3);font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;color:var(--dim)}
+.demo .dh i{width:7px;height:7px;border-radius:50%;background:var(--green);display:block}
+.demo .dh b{margin-left:auto;color:var(--blue2);font-weight:400}
+.demo .db{padding:16px}
+.demo .q{color:#9FB6C8;font-size:12.5px;line-height:1.5;border-left:2px solid var(--navy3);padding-left:11px;margin-bottom:13px}
+.demo .a{color:#DCE7F0;font-size:13.5px;line-height:1.6}
+.demo .a b{color:var(--amber)}
+.demo .tbl{margin-top:12px;border:1px solid var(--navy3);border-radius:7px;overflow:hidden}
+.demo .tr{display:grid;grid-template-columns:1fr 92px;padding:6px 11px;font-size:11.5px;color:#A9BECD;border-bottom:1px solid #16304C;font-variant-numeric:tabular-nums}
+.demo .tr:last-child{border-bottom:0;background:#0F2237;color:#fff;font-weight:600}
+.demo .tr span:last-child{text-align:right;font-family:"JetBrains Mono",monospace}
+.demo .tr .neg{color:#F0917E}
+.demo .cts{display:flex;gap:5px;margin-top:12px;flex-wrap:wrap}
+.demo .ct{font-family:"JetBrains Mono",monospace;font-size:9px;color:#8FD3BE;border:1px solid #1C4A3D;background:rgba(31,169,124,.1);padding:3px 7px;border-radius:4px}
+.trustbar{display:flex;gap:30px;padding:13px 34px;background:var(--navy);color:#A9BECD;font-size:12px;align-items:center;flex-wrap:wrap}
+.trustbar b{color:#fff;font-weight:600}
+.trustbar .s{display:flex;gap:8px;align-items:center}
+.trustbar .s i{color:var(--green);font-style:normal}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--lnl)}
+.num{padding:20px 34px;border-right:1px solid var(--lnl)}
+.num:last-child{border-right:0}
+.num b{display:block;font-size:27px;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.num span{font-size:12px;color:var(--mut)}
+.sec{padding:38px 34px}
+.sec.alt{background:var(--ppr);border-top:1px solid var(--lnl);border-bottom:1px solid var(--lnl)}
+.sechead{max-width:60ch;margin-bottom:22px}
+.sechead .lbl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:9px}
+.sechead h2{font-size:28px;line-height:1.1;margin-bottom:9px}
+.sechead p{margin:0;color:var(--mut);font-size:14.5px;line-height:1.6}
+.dores{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.dor{background:var(--wht);border:1px solid var(--lnl);border-radius:10px;padding:15px 16px}
+.dor q{display:block;font-size:14px;line-height:1.45;font-weight:600;margin-bottom:7px}
+.dor span{font-size:12.5px;color:var(--mut)}
+/* dois produtos */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.prod{border-radius:14px;overflow:hidden;border:1px solid var(--lnl);display:flex;flex-direction:column}
+.prod .ph{padding:16px 18px;color:#fff}
+.prod.p1 .ph{background:var(--navy)}
+.prod.p2 .ph{background:var(--blue)}
+.prod .ph .t{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;opacity:.8;margin-bottom:7px}
+.prod .ph h3{font-size:22px;margin-bottom:6px}
+.prod .ph p{margin:0;font-size:13px;opacity:.86;line-height:1.5}
+.prod .pb{padding:16px 18px;background:var(--wht);flex:1;display:grid;gap:9px}
+.prod .it{display:grid;grid-template-columns:18px 1fr;gap:10px;font-size:13px;line-height:1.45;color:var(--mut)}
+.prod .it i{font-style:normal;color:var(--green);font-weight:700}
+.prod .it b{color:var(--ink);font-weight:600}
+.prod .pf{padding:11px 18px;background:var(--ppr);border-top:1px solid var(--lnl);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--mut)}
+/* trilhas */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tr-card{background:var(--wht);border:1px solid var(--lnl);border-radius:11px;overflow:hidden;display:flex;flex-direction:column}
+.tr-card .cv{height:74px;position:relative;display:flex;align-items:flex-end;padding:11px 13px;color:#fff}
+.tr-card .cv em{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;opacity:.85}
+.tr-card .cv .bg{position:absolute;right:8px;top:-14px;font-size:56px;font-weight:800;opacity:.2;letter-spacing:-.06em}
+.cv1{background:linear-gradient(120deg,#173252,#0B1A2B)}
+.cv2{background:linear-gradient(120deg,#2E7DE0,#154C93)}
+.cv3{background:linear-gradient(120deg,#1FA97C,#0E5D45)}
+.cv4{background:linear-gradient(120deg,#C68A11,#7A5306)}
+.cv5{background:linear-gradient(120deg,#4C5FA8,#232F5E)}
+.cv6{background:linear-gradient(120deg,#1F7E8C,#0D3E46)}
+.tr-card .tb{padding:12px 13px 14px;display:flex;flex-direction:column;gap:5px;flex:1}
+.tr-card h4{font-size:14.5px;line-height:1.25}
+.tr-card .mt{font-size:11.5px;color:var(--mut);font-variant-numeric:tabular-nums}
+.tr-card .ex{font-size:12px;color:var(--mut);line-height:1.45;margin-top:2px}
+/* mentores + depoimentos */
+.ment{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.mcard{background:var(--wht);border:1px solid var(--lnl);border-radius:11px;padding:16px;display:grid;grid-template-columns:52px 1fr;gap:14px}
+.mcard .av{width:52px;height:52px;border-radius:12px;background:var(--navy2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.mcard h4{font-size:15px;margin-bottom:2px}
+.mcard .crc{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--blue);letter-spacing:.06em;margin-bottom:7px}
+.mcard p{margin:0;font-size:12.5px;color:var(--mut);line-height:1.5}
+.deps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.dep{background:var(--wht);border:1px solid var(--lnl);border-radius:11px;padding:16px}
+.stars{color:var(--amber);font-size:12px;letter-spacing:2px;margin-bottom:9px}
+.dep q{display:block;font-size:13.5px;line-height:1.55;margin-bottom:11px}
+.dep .who{display:flex;gap:9px;align-items:center;font-size:11.5px;color:var(--mut)}
+.dep .who i{width:26px;height:26px;border-radius:50%;background:var(--ppr);border:1px solid var(--lnl);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:10px;font-weight:700;color:var(--navy)}
+/* oferta */
+.oferta{background:var(--navy);color:#fff;padding:38px 34px}
+.obox{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;max-width:1000px}
+.oferta h2{font-size:29px;line-height:1.08;margin-bottom:12px}
+.oferta .inc{display:grid;gap:8px;margin:16px 0 0}
+.oferta .inc div{display:grid;grid-template-columns:18px 1fr;gap:10px;font-size:13.5px;color:#C3D3E0;line-height:1.45}
+.oferta .inc i{font-style:normal;color:var(--green);font-weight:700}
+.oferta .inc b{color:#fff;font-weight:600}
+.price{background:#0F2337;border:1px solid var(--navy3);border-radius:14px;padding:22px}
+.price .anchor{font-size:13px;color:#8AA2B5;text-decoration:line-through;font-variant-numeric:tabular-nums}
+.price .main{font-size:14px;color:#C3D3E0;margin-top:6px}
+.price .big{font-size:42px;font-weight:800;letter-spacing:-.045em;line-height:1;margin:2px 0 4px;font-variant-numeric:tabular-nums}
+.price .big small{font-size:15px;font-weight:600;color:#8AA2B5}
+.price .alt2{font-size:12.5px;color:#8AA2B5;margin-bottom:16px}
+.price .btn{width:100%;text-align:center;padding:13px}
+.price .warr{margin-top:13px;display:grid;grid-template-columns:34px 1fr;gap:11px;align-items:center;font-size:11.5px;color:#A9BECD;line-height:1.4}
+.price .warr .seal{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--green);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.price .pays{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.price .pays span{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;border:1px solid var(--navy3);color:#8AA2B5;padding:3px 7px;border-radius:4px}
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.qa{background:var(--wht);border:1px solid var(--lnl);border-radius:10px;padding:14px 16px}
+.qa b{display:block;font-size:13.5px;margin-bottom:5px}
+.qa span{font-size:12.5px;color:var(--mut);line-height:1.5}
+.lpfoot{padding:16px 34px;border-top:1px solid var(--lnl);font-size:11px;color:var(--dim);display:flex;justify-content:space-between;background:var(--wht)}
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="kicker">Direção C revisada · paleta do mercado contábil</p>
+    <h1>Copiloto Fiscal</h1>
+    <p class="lede">A densidade e os modos de resposta da direção C, agora na linguagem visual que o contador brasileiro já reconhece: navy e azul do Contabilizei e do Conta Azul, verde para valor, amarelo para o botão de compra — como Nibo e Conta Azul fazem. A landing virou página de vendas no formato Hotmart, e deixa explícito que a assinatura entrega <strong>duas coisas</strong>: o copiloto e a mentoria.</p>
+    <div class="pal">
+      <div class="palgrp"><div class="sws"><i style="background:#0B1A2B"></i><i style="background:#112741"></i><i style="background:#173252"></i></div><span>Navy · ambiente do app</span></div>
+      <div class="palgrp"><div class="sws"><i style="background:#2E7DE0"></i><i style="background:#5AA3F0"></i></div><span>Azul · marca e ação</span></div>
+      <div class="palgrp"><div class="sws"><i style="background:#1FA97C"></i></div><span>Verde · valor e progresso</span></div>
+      <div class="palgrp"><div class="sws"><i style="background:#F0B429"></i></div><span>Amarelo · só o CTA de venda</span></div>
+      <div class="palgrp"><div class="sws"><i style="background:#FFFFFF"></i><i style="background:#F3F7FB"></i></div><span>Claro · landing e leitura</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="picker" aria-label="Telas">
+  <div class="wrap tabs" role="tablist">
+    <button class="tab" role="tab" data-screen="landing" aria-selected="true">1 · Página de vendas</button>
+    <button class="tab" role="tab" data-screen="onboarding" aria-selected="false">2 · Cadastro → trilha</button>
+    <button class="tab" role="tab" data-screen="chat" aria-selected="false">3 · Copiloto</button>
+    <button class="tab" role="tab" data-screen="mentoria" aria-selected="false">4 · Mentoria</button>
+    <button class="tab" role="tab" data-screen="admin" aria-selected="false">5 · Admin</button>
+  </div>
+</nav>
+
+<section class="wrap caption" data-cap="landing">
+  <div>
+    <span class="n">Tela 1</span>
+    <h2>Página de vendas</h2>
+    <p>Estrutura de página de vendas de curso: promessa, dor, o que você recebe, trilhas, autoridade de quem ensina, depoimentos, oferta com preço ancorado e parcelamento, garantia de 7 dias e FAQ. A diferença em relação a um infoproduto comum está em deixar explícito que são <strong>dois produtos independentes</strong>, com três ofertas — copiloto, mentoria ou combo. O copiloto aparece funcionando dentro do hero, em card escuro sobre a página clara, para que ninguém confunda isto com mais um curso gravado.</p>
+  </div>
+  <dl class="keys">
+    <div class="key-r"><dt>Herói</dt><dd>O copiloto respondendo um caso real, não um vídeo de vendas</dd></div>
+    <div class="key-r"><dt>Gatilhos</dt><dd>Ancoragem, 12x, bônus, garantia 7 dias, prova social</dd></div>
+    <div class="key-r"><dt>Pagamento</dt><dd>Pix, boleto e cartão — simulados nesta POC</dd></div>
+  </dl>
+</section>
+
+<div class="wrap">
+<div class="frame" data-screen="landing">
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">praxisfiscal.com.br</div></div>
+  <div class="scroller"><div class="mock lp">
+
+    <div class="top">
+      <div class="brand"><i></i>Praxis Fiscal</div>
+      <nav><span>O copiloto</span><span>Mentoria</span><span>Quem somos</span><span>Preço</span><span>Dúvidas</span></nav>
+      <div class="r"><span>Entrar</span><span class="btn amber">Quero acesso</span></div>
+    </div>
+
+    <div class="hero">
+      <div>
+        <div class="eyeb">COPILOTO FISCAL <b>&#9679;</b> MENTORIA EM REFORMA TRIBUTÁRIA</div>
+        <h1>Pare de <u>procurar na lei</u> o que o cliente precisa saber hoje.</h1>
+        <p>Dois produtos, vendidos separados ou juntos: um <b>copiloto de IA</b> que responde a dúvida prática citando a fonte, e a <b>mentoria em vídeo</b> sobre reforma tributária aplicada. Leve o que você precisa agora — dá para adicionar o outro depois, sem perder nada.</p>
+        <div class="ctas"><span class="btn amber">Quero acesso imediato</span><span class="btn line">Ver como o copiloto responde</span></div>
+        <div class="microcopy">Pix, boleto ou 12x no cartão · 7 dias de garantia incondicional · acesso liberado na hora</div>
+      </div>
+      <div class="demo">
+        <div class="dh"><i></i><span>COPILOTO · MODO CÁLCULO</span><b>fontes: 2</b></div>
+        <div class="db">
+          <div class="q">Atacadista no RS, R$ 900 mil/mês, recebimento em 32 dias. Quanto de giro ele precisa no primeiro mês de split payment?</div>
+          <div class="a">Cerca de <b>R$ 238 mil</b>. No mês da virada ele paga a apuração do regime antigo <b>e</b> perde a retenção do mês corrente. É efeito de caixa, não de carga.</div>
+          <div class="tbl">
+            <div class="tr"><span>Retenção no ato (IBS + CBS)</span><span class="neg">−119.250</span></div>
+            <div class="tr"><span>Apuração do mês anterior</span><span class="neg">−118.700</span></div>
+            <div class="tr"><span>Giro adicional necessário</span><span>−237.950</span></div>
+          </div>
+          <div class="cts"><span class="ct">LC 214/2025 art. 31</span><span class="ct">Trilha 03 · aula 3.3 · 12:40</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trustbar">
+      <span class="s"><i>&#10003;</i> <b>Acesso imediato</b> após o pagamento</span>
+      <span class="s"><i>&#10003;</i> <b>7 dias</b> de garantia incondicional</span>
+      <span class="s"><i>&#10003;</i> <b>Certificado</b> de conclusão com 40h</span>
+      <span class="s"><i>&#10003;</i> Base normativa <b>atualizada toda semana</b></span>
+    </div>
+
+    <div class="nums">
+      <div class="num"><b>6</b><span>trilhas por assunto</span></div>
+      <div class="num"><b>118</b><span>aulas práticas em vídeo</span></div>
+      <div class="num"><b>340</b><span>documentos na base do copiloto</span></div>
+      <div class="num"><b>1.204</b><span>contadores já dentro</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sechead">
+        <div class="lbl">O problema</div>
+        <h2>A lei você já leu. O cliente não pergunta a lei.</h2>
+        <p>Todo material sobre a reforma explica o que muda. Quase nenhum explica o que fazer na segunda-feira de manhã, com o caso concreto na mesa.</p>
+      </div>
+      <div class="dores">
+        <div class="dor"><q>"Meu saldo credor de ICMS some em 2033?"</q><span>Você sabe que vira crédito em 240 parcelas. Sabe o que protocolar, em que ordem e até quando?</span></div>
+        <div class="dor"><q>"Fico no Simples ou saio?"</q><span>A resposta não está na carga tributária dele. Está em quem compra dele — e isso muda o cálculo inteiro.</span></div>
+        <div class="dor"><q>"O split payment quebra meu caixa?"</q><span>Quebra um mês. Quem descobre isso pelo extrato paga juros de conta garantida sem precisar.</span></div>
+      </div>
+    </div>
+
+    <div class="sec alt">
+      <div class="sechead">
+        <div class="lbl">O que você recebe</div>
+        <h2>Dois produtos. Compre um, o outro, ou os dois.</h2>
+        <p>Não é um curso com chatbot de brinde, nem um chatbot com aulas de brinde. São produtos que funcionam sozinhos e são vendidos separados. Quem só quer a ferramenta do dia a dia leva o copiloto. Quem só quer estudar leva a mentoria — e <b>não precisa do copiloto para isso</b>. Quem leva os dois paga menos e ganha uma coisa a mais: as aulas viram fonte citável do copiloto.</p>
+      </div>
+      <div class="duo">
+        <div class="prod p1">
+          <div class="ph">
+            <div class="t">PRODUTO 01 · USO DIÁRIO · VENDIDO SOZINHO</div>
+            <h3>Copiloto Fiscal</h3>
+            <p>O assistente que responde a dúvida prática, com a fonte ao lado de cada afirmação.</p>
+          </div>
+          <div class="pb">
+            <div class="it"><i>&#10003;</i><span><b>Consultas ilimitadas</b>, com o caso concreto: regime, UF, CNAE e valores</span></div>
+            <div class="it"><i>&#10003;</i><span>Três modos de resposta: <b>Prático</b> (passo a passo), <b>Cálculo</b> (tabela de caixa) e <b>Norma</b> (fundamentação)</span></div>
+            <div class="it"><i>&#10003;</i><span>Toda afirmação com <b>citação verificável</b> — norma ou minuto da aula</span></div>
+            <div class="it"><i>&#10003;</i><span>Histórico por cliente, para retomar a consulta meses depois</span></div>
+          </div>
+          <div class="pf">FUNCIONA SEM A MENTORIA</div>
+        </div>
+        <div class="prod p2">
+          <div class="ph">
+            <div class="t">PRODUTO 02 · FORMAÇÃO · VENDIDA SOZINHA</div>
+            <h3>Mentoria</h3>
+            <p>Seis trilhas em vídeo sobre reforma tributária aplicada. Ensina o assunto, não a ferramenta.</p>
+          </div>
+          <div class="pb">
+            <div class="it"><i>&#10003;</i><span><b>118 aulas</b> em 6 trilhas, com trilha inicial montada a partir do seu cadastro</span></div>
+            <div class="it"><i>&#10003;</i><span>Planilhas, <b>modelos de petição e de parecer</b> prontos para adaptar</span></div>
+            <div class="it"><i>&#10003;</i><span><b>Plantão de dúvidas ao vivo</b> a cada 15 dias, direto com quem ensina</span></div>
+            <div class="it"><i>&#10003;</i><span>Certificado de conclusão com carga horária de 40h</span></div>
+          </div>
+          <div class="pf">FUNCIONA SEM O COPILOTO</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sechead">
+        <div class="lbl">As trilhas</div>
+        <h2>Organizadas pelo assunto que aparece no escritório</h2>
+        <p>Não pela ordem dos artigos da lei. Você entra pela dor que tem hoje e o sistema monta o resto do caminho.</p>
+      </div>
+      <div class="tgrid">
+        <div class="tr-card"><div class="cv cv1"><span class="bg">01</span><em>FUNDAMENTOS</em></div><div class="tb"><h4>IBS e CBS do zero</h4><div class="mt">18 aulas · 4h12</div><div class="ex">O que é crédito financeiro, por que a não cumulatividade virou plena e o que isso faz com a sua planilha.</div></div></div>
+        <div class="tr-card"><div class="cv cv2"><span class="bg">02</span><em>TRANSIÇÃO</em></div><div class="tb"><h4>Transição 2026–2033</h4><div class="mt">23 aulas · 6h48</div><div class="ex">Ano de teste, fim do PIS/Cofins, rampa do ICMS e do ISS, e o destino do saldo credor.</div></div></div>
+        <div class="tr-card"><div class="cv cv3"><span class="bg">03</span><em>CAIXA</em></div><div class="tb"><h4>Split payment e fluxo de caixa</h4><div class="mt">14 aulas · 3h30</div><div class="ex">Projeção de giro, venda parcelada, cartão e conciliação. Com planilha de simulação.</div></div></div>
+        <div class="tr-card"><div class="cv cv4"><span class="bg">04</span><em>SIMPLES</em></div><div class="tb"><h4>Simples Nacional pós-reforma</h4><div class="mt">16 aulas · 3h58</div><div class="ex">A árvore de decisão de ficar ou sair, e o meio-termo que quase ninguém usa.</div></div></div>
+        <div class="tr-card"><div class="cv cv5"><span class="bg">05</span><em>NOTA FISCAL</em></div><div class="tb"><h4>Leiaute da nota com IBS, CBS e IS</h4><div class="mt">11 aulas · 2h44</div><div class="ex">Campo a campo, e o que fazer quando o ERP do cliente ainda não atualizou.</div></div></div>
+        <div class="tr-card"><div class="cv cv6"><span class="bg">06</span><em>SETORIAL</em></div><div class="tb"><h4>Regimes específicos</h4><div class="mt">13 aulas · 3h06</div><div class="ex">Bar e restaurante, hotelaria, transporte, saúde e imobiliário — o que cada um ganhou.</div></div></div>
+      </div>
+    </div>
+
+    <div class="sec alt">
+      <div class="sechead">
+        <div class="lbl">Quem somos</div>
+        <h2>Duas profissionais na ativa — não uma produtora de curso</h2>
+        <p>A contadora atende clientes hoje e já conduz mentorias; a advogada responde pela fundamentação. Todo procedimento que entra na plataforma passou antes por um cliente real.</p>
+      </div>
+      <div class="ment">
+        <div class="mcard">
+          <div class="av">CT</div>
+          <div>
+            <h4>Contadora, especialista em tributário</h4>
+            <div class="crc">CRC · NOME A DEFINIR</div>
+            <p>Atende carteira própria e já dá mentoria para outros contadores. É de onde vem o material prático: o caso real, a planilha que resolveu e o passo que ninguém conta no curso teórico.</p>
+          </div>
+        </div>
+        <div class="mcard">
+          <div class="av">AT</div>
+          <div>
+            <h4>Advogada tributarista, especialista em Reforma</h4>
+            <div class="crc">OAB · NOME A DEFINIR</div>
+            <p>Responde pela fundamentação de tudo que o copiloto afirma e pela leitura normativa das aulas. É quem separa o que a lei já resolveu do que ainda é interpretação.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sechead">
+        <div class="lbl">Prova social</div>
+        <h2>O que mudou na rotina de quem já entrou</h2>
+      </div>
+      <div class="deps">
+        <div class="dep"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><q>"Respondi uma dúvida de saldo credor em 4 minutos, com o artigo do ADCT na tela. Antes eu levava meio dia e ainda ficava inseguro."</q><div class="who"><i>CB</i><span>Camila Bastos · escritório com 90 clientes · Belo Horizonte</span></div></div>
+        <div class="dep"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><q>"A trilha do split payment pagou a assinatura do ano em um cliente só. Antecipamos a linha de giro e ele não pagou juros na virada."</q><div class="who"><i>JN</i><span>Jonas Nakamura · contabilidade para indústria · Joinville</span></div></div>
+        <div class="dep"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><q>"O que me convenceu foi ver a fonte de cada resposta. Já testei outros e todos inventavam artigo. Este diz quando não sabe."</q><div class="who"><i>PA</i><span>Patrícia Alencar · consultoria tributária · Recife</span></div></div>
+      </div>
+    </div>
+
+    <div class="oferta">
+      <style>
+        .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+        .tri .price{padding:20px;display:flex;flex-direction:column}
+        .tri .price.destaque{border-color:#F0B429;background:#132C43}
+        .tri .price .rot{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.13em;color:#8AA2B5;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center}
+        .tri .price.destaque .rot{color:#F0B429}
+        .tri .price h3{font-size:18px;color:#fff;margin-bottom:4px}
+        .tri .price .sub{font-size:12px;color:#8AA2B5;margin-bottom:14px;line-height:1.45;min-height:34px}
+        .tri .price .big{font-size:30px;margin:0 0 3px}
+        .tri .price .alt2{margin-bottom:14px}
+        .tri .price ul{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:7px;font-size:12.5px;color:#C3D3E0;line-height:1.4}
+        .tri .price li::before{content:"✓";color:#1FA97C;font-weight:700;margin-right:8px}
+        .tri .price .btn{margin-top:auto}
+        .fecho{display:flex;gap:26px;align-items:center;margin-top:22px;flex-wrap:wrap;border-top:1px solid #173252;padding-top:18px}
+        .fecho .warr{margin:0;max-width:420px}
+        .fecho .pays{margin:0}
+        .fecho .add{font-size:12.5px;color:#A9BECD;max-width:36ch;line-height:1.5}
+      </style>
+      <div style="max-width:1060px">
+        <div class="lbl mono" style="font-size:10px;letter-spacing:.14em;color:#F0B429;margin-bottom:10px">A OFERTA</div>
+        <h2>Escolha o que você precisa agora</h2>
+        <p style="color:#A9BECD;font-size:14.5px;margin:8px 0 0;max-width:62ch">Os dois produtos são independentes. Comece por um e adicione o outro quando quiser — o histórico das suas consultas e o progresso das aulas continuam onde estavam.</p>
+
+        <div class="tri">
+          <div class="price">
+            <div class="rot"><span>PRODUTO 01</span></div>
+            <h3>Copiloto</h3>
+            <div class="sub">A ferramenta do dia a dia. Sem aulas.</div>
+            <div class="big">12x R$ 81<small>,40</small></div>
+            <div class="alt2">ou R$ 970 à vista · 12 meses</div>
+            <ul><li>Consultas ilimitadas</li><li>Citação de fonte em tudo</li><li>Três modos de resposta</li><li>Histórico por cliente</li></ul>
+            <span class="btn line" style="border-color:#2E7DE0;color:#fff;text-align:center">Assinar o copiloto</span>
+          </div>
+
+          <div class="price">
+            <div class="rot"><span>PRODUTO 02</span></div>
+            <h3>Mentoria</h3>
+            <div class="sub">A formação completa. Não precisa do copiloto.</div>
+            <div class="big">12x R$ 129<small>,00</small></div>
+            <div class="alt2">ou R$ 1.290 à vista · 12 meses</div>
+            <ul><li>6 trilhas · 118 aulas</li><li>Planilhas e modelos em Word</li><li>Plantão ao vivo quinzenal</li><li>Certificado de 40h</li></ul>
+            <span class="btn line" style="border-color:#2E7DE0;color:#fff;text-align:center">Assinar a mentoria</span>
+          </div>
+
+          <div class="price destaque">
+            <div class="rot"><span>OS DOIS JUNTOS</span><span>MAIS ESCOLHIDO</span></div>
+            <h3>Combo</h3>
+            <div class="sub">Tudo liberado, e as aulas viram fonte do copiloto.</div>
+            <div class="anchor">Separados sairiam R$ 2.260</div>
+            <div class="big">12x R$ 157<small>,40</small></div>
+            <div class="alt2">ou R$ 1.890 à vista no Pix — economia de R$ 370</div>
+            <ul><li>Copiloto + Mentoria</li><li>Bônus: simulador de carga na transição</li><li>Bônus: 12 modelos de petição e parecer</li><li>Bônus: checklist de diagnóstico</li></ul>
+            <span class="btn amber" style="text-align:center">Quero os dois</span>
+          </div>
+        </div>
+
+        <div class="fecho">
+          <div class="warr"><span class="seal">7d</span><span>Se em 7 dias você achar que não é para você, devolvemos tudo. Sem formulário e sem pergunta.</span></div>
+          <div class="pays"><span>PIX</span><span>BOLETO</span><span>CARTÃO 12X</span><span>NOTA FISCAL</span></div>
+          <div class="add">Já é assinante de um deles? O outro entra com desconto proporcional direto no painel.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sechead">
+        <div class="lbl">Dúvidas</div>
+        <h2>O que perguntam antes de assinar</h2>
+      </div>
+      <div class="faq">
+        <div class="qa"><b>O copiloto inventa resposta?</b><span>Ele só responde a partir da base de documentos e das aulas, e mostra o trecho que usou. Quando a base não cobre a pergunta, ele diz que não sabe e encaminha para o plantão.</span></div>
+        <div class="qa"><b>Serve para quem já é especialista?</b><span>Serve melhor ainda. As trilhas partem do caso concreto, não do conceito. Você pode ir direto para a trilha 03 se o seu problema hoje é caixa.</span></div>
+        <div class="qa"><b>E quando a lei mudar de novo?</b><span>A base é atualizada semanalmente e a data aparece no topo do copiloto. Aula afetada por norma nova é regravada, não corrigida por errata.</span></div>
+        <div class="qa"><b>Posso usar com dados do meu cliente?</b><span>Pode. Os dados que você digita não são usados para treinar modelo e ficam restritos à sua conta.</span></div>
+        <div class="qa"><b>Dá para comprar só a mentoria?</b><span>Dá. São produtos separados: você pode levar só a mentoria, só o copiloto, ou os dois. As aulas não ensinam a usar a ferramenta — elas ensinam o assunto.</span></div>
+        <div class="qa"><b>Se eu comprar um agora, dá para adicionar o outro depois?</b><span>Dá, direto no painel e com desconto proporcional ao que você já pagou. Histórico de consultas e progresso de aulas continuam onde estavam.</span></div>
+      </div>
+    </div>
+
+    <div class="lpfoot"><span>Praxis Fiscal · Protótipo · CNPJ 00.000.000/0001-00</span><span>Valores, depoimentos e conteúdo ilustrativos para avaliação de design</span></div>
+  </div></div>
+</div>
+</div>
+
+<style>
+/* ===== APP (escuro) ===== */
+.ap{background:var(--navy);color:#DDE8F1}
+.ap .bar{display:flex;align-items:center;gap:26px;padding:12px 26px;border-bottom:1px solid var(--lnd);background:#0A1826}
+.ap .brand{font-weight:800;font-size:16px;letter-spacing:-.04em;display:flex;align-items:center;gap:9px;color:#fff}
+.ap .brand i{width:22px;height:22px;border-radius:6px;background:var(--blue);position:relative;display:block}
+.ap .brand i::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--amber)}
+.ap .bar nav{display:flex;gap:4px}
+.ap .bar nav a{font-size:13px;font-weight:600;color:#8FA8BC;padding:6px 13px;border-radius:7px;text-decoration:none;display:block}
+.ap .bar nav a[data-on]{background:var(--navy3);color:#fff}
+.ap .bar .r{margin-left:auto;display:flex;align-items:center;gap:13px;font-size:12px;color:#8FA8BC}
+.ap .basedate{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.08em;border:1px solid var(--lnd);border-radius:20px;padding:4px 10px;color:#7FD3B4}
+.ap .who{width:28px;height:28px;border-radius:50%;background:var(--navy3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+
+/* onboarding */
+.onb{padding:30px 26px 40px;display:grid;grid-template-columns:minmax(0,1.25fr) 340px;gap:30px}
+.steps{display:flex;gap:8px;margin-bottom:22px;align-items:center}
+.stp{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;color:#6E8AA1;display:flex;align-items:center;gap:7px}
+.stp i{width:20px;height:20px;border-radius:50%;border:1px solid var(--lnd);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:9px}
+.stp[data-done] i{background:var(--green);border-color:var(--green);color:#04241A;font-weight:700}
+.stp[data-on]{color:#fff}
+.stp[data-on] i{border-color:var(--amber);color:var(--amber)}
+.stp .ln{width:26px;height:1px;background:var(--lnd)}
+.onb h2{font-size:26px;color:#fff;margin-bottom:8px}
+.onb>div>p{color:#93AABE;font-size:14px;margin:0 0 22px;max-width:56ch;line-height:1.6}
+.qgroup{margin-bottom:24px}
+.qgroup h4{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#7591A8;font-weight:400;margin-bottom:10px}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.opts.two{grid-template-columns:repeat(2,1fr)}
+.opt{border:1px solid var(--lnd);border-radius:9px;padding:12px 13px;background:#0E2135;cursor:default}
+.opt b{display:block;font-size:13.5px;color:#DDE8F1;margin-bottom:3px;font-weight:600}
+.opt span{font-size:11.5px;color:#8299AD;line-height:1.4}
+.opt[data-sel]{border-color:var(--blue);background:rgba(46,125,224,.13)}
+.opt[data-sel] b{color:#fff}
+.opt[data-sel]::after{content:"✓";float:right;color:var(--blue);font-weight:700;font-size:12px;margin-top:-18px}
+.chipsrow{display:flex;gap:7px;flex-wrap:wrap}
+.chp{border:1px solid var(--lnd);border-radius:20px;padding:6px 13px;font-size:12.5px;color:#8299AD}
+.chp[data-sel]{border-color:var(--green);background:rgba(31,169,124,.14);color:#8FE0C2;font-weight:600}
+.onbfoot{display:flex;gap:12px;align-items:center;margin-top:6px}
+.bx{display:inline-block;padding:10px 20px;border-radius:8px;font-size:13.5px;font-weight:700}
+.bx.amber{background:var(--amber);color:#2A1D02}
+.bx.blue{background:var(--blue);color:#fff}
+.bx.ghost{border:1px solid var(--lnd);color:#93AABE}
+.preview{background:#0E2135;border:1px solid var(--lnd);border-radius:12px;padding:18px;position:sticky;top:0;height:fit-content}
+.preview .ph{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.13em;color:var(--amber);margin-bottom:12px}
+.preview h3{font-size:17px;color:#fff;margin-bottom:5px}
+.preview>p{font-size:12.5px;color:#8299AD;margin:0 0 16px;line-height:1.5}
+.ptrail{display:grid;gap:8px}
+.pt{display:grid;grid-template-columns:26px 1fr;gap:11px;padding:9px 0;border-top:1px solid #16304C;align-items:start}
+.pt .o{font-family:"JetBrains Mono",monospace;font-size:10px;color:#6E8AA1;padding-top:2px}
+.pt b{display:block;font-size:13px;color:#DDE8F1;font-weight:600;line-height:1.3}
+.pt span{font-size:11px;color:#7591A8;font-variant-numeric:tabular-nums}
+.pt[data-first] .o{color:var(--amber)}
+.pt .why{font-size:10.5px;color:var(--green);margin-top:3px;display:block}
+.preview .note2{margin-top:14px;padding-top:12px;border-top:1px solid #16304C;font-size:11px;color:#7591A8;line-height:1.45}
+
+/* copiloto */
+.cp{display:grid;grid-template-columns:56px 232px minmax(0,1fr);min-height:640px}
+.icobar{border-right:1px solid var(--lnd);background:#081420;display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:7px}
+.icobar .ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#5E7B92;font-size:15px}
+.icobar .ic[data-on]{background:var(--navy3);color:var(--amber)}
+.convlist{border-right:1px solid var(--lnd);background:#0A1826;padding:14px 0}
+.convlist h4{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:#5E7B92;margin:0 14px 9px;font-weight:400}
+.cv-i{padding:9px 14px;font-size:12.5px;color:#93AABE;line-height:1.35;border-left:2px solid transparent}
+.cv-i[data-on]{background:var(--navy3);border-left-color:var(--amber);color:#fff}
+.cv-i em{display:block;font-style:normal;font-family:"JetBrains Mono",monospace;font-size:9px;color:#5E7B92;margin-top:3px;letter-spacing:.05em}
+.cpane{display:flex;flex-direction:column}
+.cphead{padding:11px 24px;border-bottom:1px solid var(--lnd);display:flex;align-items:center;gap:12px;font-size:13px;color:#DDE8F1;font-weight:600}
+.modes{margin-left:auto;display:flex;gap:2px;background:#0A1826;border:1px solid var(--lnd);border-radius:7px;padding:2px}
+.md{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.07em;padding:6px 11px;border-radius:5px;color:#5E7B92}
+.md[data-on]{background:var(--navy3);color:var(--amber)}
+.cstream{padding:22px 24px;display:flex;flex-direction:column;gap:18px;flex:1}
+.uask{font-size:14.5px;line-height:1.5;max-width:66ch;color:#fff}
+.uask em{display:block;font-style:normal;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.13em;color:#5E7B92;margin-bottom:6px}
+.aout{max-width:70ch;font-size:14px;line-height:1.65;color:#C6D6E3}
+.aout h3{font-size:17.5px;color:#fff;margin-bottom:10px}
+.aout p{margin:0 0 12px}
+.aout b{color:#fff}
+.sup{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:#7FD3B4;vertical-align:super}
+.flux{border:1px solid var(--lnd);border-radius:9px;background:#0E2135;margin:4px 0 14px;overflow:hidden}
+.flux .fh{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.11em;color:#5E7B92;padding:8px 13px;border-bottom:1px solid var(--lnd);display:flex;justify-content:space-between}
+.fr{display:grid;grid-template-columns:1fr 100px 84px;gap:12px;padding:8px 13px;font-size:12.5px;border-bottom:1px solid #16304C;font-variant-numeric:tabular-nums;color:#B3C6D5}
+.fr:last-child{border-bottom:0}
+.fr span:not(:first-child){text-align:right;font-family:"JetBrains Mono",monospace;font-size:11.5px}
+.fr .neg{color:#F0917E}.fr .pos{color:#7FD3B4}
+.fr.tt{background:#12293F;color:#fff;font-weight:600}
+.srcblk{border-top:1px solid var(--lnd);padding-top:12px;display:grid;gap:9px}
+.srcblk .sh{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:#5E7B92;display:flex;justify-content:space-between}
+.srcln{display:grid;grid-template-columns:24px 1fr auto;gap:10px;font-size:12px;color:#93AABE;line-height:1.45;align-items:start}
+.srcln i{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:#7FD3B4}
+.srcln b{color:#fff;font-weight:500}
+.srcln .go{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--blue2);border:1px solid #1E4770;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.fb{display:flex;gap:8px;align-items:center;font-size:11px;color:#5E7B92;margin-top:4px}
+.fb span{border:1px solid var(--lnd);border-radius:6px;padding:3px 9px}
+.cprompt{margin:0 24px 20px;border:1px solid var(--lnd);border-radius:9px;background:#0E2135;padding:12px 14px;display:flex;align-items:center;gap:12px;font-size:13px;color:#5E7B92}
+.cprompt .bx{margin-left:auto;padding:7px 15px}
+.kb{font-family:"JetBrains Mono",monospace;font-size:9.5px;border:1px solid var(--lnd);border-radius:4px;padding:2px 6px;color:#5E7B92}
+</style>
+
+<section class="wrap caption" data-cap="onboarding" hidden>
+  <div>
+    <span class="n">Tela 2</span>
+    <h2>Cadastro que vira trilha</h2>
+    <p>Quatro perguntas logo depois do pagamento, e a trilha é montada na frente do aluno — o painel da direita reordena a cada resposta, mostrando <em>por que</em> cada trilha entrou naquela posição. É o que transforma "seis trilhas disponíveis" em "o seu caminho começa aqui", e o mesmo perfil ainda serve de contexto para o copiloto: ele já sabe a UF e o regime dos clientes antes da primeira pergunta.</p>
+  </div>
+  <dl class="keys">
+    <div class="key-r"><dt>Entrada</dt><dd>Perfil, regimes, setores e a dor de hoje</dd></div>
+    <div class="key-r"><dt>Saída</dt><dd>Ordem das 6 trilhas + contexto salvo no perfil</dd></div>
+    <div class="key-r"><dt>Reuso</dt><dd>O mesmo perfil alimenta as respostas do copiloto</dd></div>
+  </dl>
+</section>
+
+<div class="wrap">
+<div class="frame" data-screen="onboarding" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxisfiscal.com.br/inicio</div></div>
+  <div class="scroller"><div class="mock ap">
+    <div class="bar">
+      <div class="brand"><i></i>Praxis Fiscal</div>
+      <div class="r"><span class="basedate">&#9679; BASE 04.09.2026</span><span>Aline Bertoni</span><span class="who">AB</span></div>
+    </div>
+    <div class="onb">
+      <div>
+        <div class="steps">
+          <span class="stp" data-done><i>&#10003;</i>CONTA</span><span class="ln"></span>
+          <span class="stp" data-done><i>&#10003;</i>PAGAMENTO</span><span class="ln"></span>
+          <span class="stp" data-on><i>3</i>SEU PERFIL</span><span class="ln"></span>
+          <span class="stp"><i>4</i>COMEÇAR</span>
+        </div>
+        <h2>Quatro perguntas e a sua trilha está pronta</h2>
+        <p>Ninguém precisa das seis trilhas na mesma ordem. Responda rápido — dá para mudar tudo depois nas configurações.</p>
+
+        <div class="qgroup">
+          <h4>01 · Onde você atua</h4>
+          <div class="opts">
+            <div class="opt" data-sel><b>Escritório contábil</b><span>Atendo várias empresas como cliente</span></div>
+            <div class="opt"><b>Contabilidade interna</b><span>Sou do time fiscal de uma empresa</span></div>
+            <div class="opt"><b>Consultoria</b><span>Trabalho por projeto ou parecer</span></div>
+          </div>
+        </div>
+
+        <div class="qgroup">
+          <h4>02 · Regime da maior parte da sua carteira</h4>
+          <div class="opts">
+            <div class="opt"><b>Simples Nacional</b><span>Maioria no anexo I ou III</span></div>
+            <div class="opt" data-sel><b>Lucro Presumido</b><span>Comércio e serviço de médio porte</span></div>
+            <div class="opt"><b>Lucro Real</b><span>Indústria e grandes contribuintes</span></div>
+          </div>
+        </div>
+
+        <div class="qgroup">
+          <h4>03 · Setores que mais aparecem</h4>
+          <div class="chipsrow">
+            <span class="chp" data-sel>Comércio atacadista</span><span class="chp" data-sel>Indústria de alimentos</span><span class="chp">Serviços</span><span class="chp">Bar e restaurante</span><span class="chp">Transporte</span><span class="chp">Saúde</span><span class="chp">Imobiliário</span><span class="chp">Agro</span>
+          </div>
+        </div>
+
+        <div class="qgroup">
+          <h4>04 · O que está te apertando agora</h4>
+          <div class="opts two">
+            <div class="opt" data-sel><b>Caixa do cliente na virada</b><span>Split payment, giro e conciliação</span></div>
+            <div class="opt"><b>Saldo credor de ICMS</b><span>Homologação e aproveitamento</span></div>
+            <div class="opt"><b>Ficar ou sair do Simples</b><span>Simulação por carteira</span></div>
+            <div class="opt"><b>Nota fiscal e ERP</b><span>Leiaute novo e campos do IBS/CBS</span></div>
+          </div>
+        </div>
+
+        <div class="onbfoot">
+          <span class="bx amber">Montar minha trilha</span>
+          <span class="bx ghost">Pular e ver tudo</span>
+        </div>
+      </div>
+
+      <aside class="preview">
+        <div class="ph">PRÉVIA · ATUALIZA A CADA RESPOSTA</div>
+        <h3>Sua trilha</h3>
+        <p>6 trilhas · 118 aulas · 24h18 no total. Você começa pela 03 por causa da última resposta.</p>
+        <div class="ptrail">
+          <div class="pt" data-first><span class="o">01</span><div><b>Split payment e fluxo de caixa</b><span>14 aulas · 3h30</span><span class="why">↑ subiu: é a sua dor de hoje</span></div></div>
+          <div class="pt"><span class="o">02</span><div><b>IBS e CBS do zero</b><span>18 aulas · 4h12</span><span class="why">base necessária para a 03</span></div></div>
+          <div class="pt"><span class="o">03</span><div><b>Transição 2026–2033</b><span>23 aulas · 6h48</span></div></div>
+          <div class="pt"><span class="o">04</span><div><b>Leiaute da nota com IBS, CBS e IS</b><span>11 aulas · 2h44</span><span class="why">↑ atacado emite muita nota</span></div></div>
+          <div class="pt"><span class="o">05</span><div><b>Regimes específicos</b><span>13 aulas · 3h06</span><span class="why">filtrado para alimentos e bebidas</span></div></div>
+          <div class="pt"><span class="o">06</span><div><b>Simples Nacional pós-reforma</b><span>16 aulas · 3h58</span><span class="why">↓ desceu: pouco Simples na carteira</span></div></div>
+        </div>
+        <div class="note2">O copiloto também passa a usar este perfil: quando você perguntar sobre alíquota, ele já assume Lucro Presumido e atacado, e avisa quando a resposta muda para outro regime.</div>
+      </aside>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<section class="wrap caption" data-cap="chat" hidden>
+  <div>
+    <span class="n">Tela 3</span>
+    <h2>Copiloto</h2>
+    <p>A tela que abre depois do login. Densidade de ferramenta de trabalho: trilho de ícones, histórico de consultas por cliente e três modos que mudam o formato da resposta, não o tom dela. O modo Cálculo devolve tabela de caixa; o Prático devolve passo a passo; o Norma devolve fundamentação. Toda afirmação carrega o marcador da fonte, e cada fonte tem um botão para abrir o documento ou pular para o minuto exato da aula — é o que liga os dois sistemas.</p>
+  </div>
+  <dl class="keys">
+    <div class="key-r"><dt>Menu</dt><dd>Copiloto e <strong>Mentoria</strong> no mesmo cabeçalho</dd></div>
+    <div class="key-r"><dt>Confiança</dt><dd>Data da base no topo · fonte por afirmação · joinha por resposta</dd></div>
+    <div class="key-r"><dt>Avaliação</dt><dd>O joinha alimenta a fila de revisão das mentoras</dd></div>
+  </dl>
+</section>
+
+<div class="wrap">
+<div class="frame" data-screen="chat" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxisfiscal.com.br/copiloto</div></div>
+  <div class="scroller"><div class="mock ap">
+    <div class="bar">
+      <div class="brand"><i></i>Praxis Fiscal</div>
+      <nav><a data-on>Copiloto</a><a>Mentoria</a><a>Meus documentos</a></nav>
+      <div class="r"><span class="basedate">&#9679; BASE 04.09.2026</span><span>Aline Bertoni</span><span class="who">AB</span></div>
+    </div>
+    <div class="cp">
+      <aside class="icobar">
+        <div class="ic" data-on>&#9679;</div>
+        <div class="ic">&#9636;</div>
+        <div class="ic">&#9635;</div>
+        <div class="ic">&#9881;</div>
+      </aside>
+      <aside class="convlist">
+        <h4>Consultas</h4>
+        <div class="cv-i" data-on>Split payment no caixa do atacadista<em>HOJE 09:12 · CÁLCULO</em></div>
+        <div class="cv-i">Saldo credor de ICMS na transição<em>ONTEM · PRÁTICO</em></div>
+        <div class="cv-i">Restaurante: sair do Simples?<em>02 SET · PRÁTICO</em></div>
+        <div class="cv-i">Imposto Seletivo em refrigerante<em>28 AGO · NORMA</em></div>
+        <h4 style="margin-top:18px">Sua trilha</h4>
+        <div class="cv-i">Split payment e fluxo de caixa<em>AULA 3.3 · 38%</em></div>
+      </aside>
+      <main class="cpane">
+        <div class="cphead">
+          <span>Split payment no caixa do atacadista</span>
+          <div class="modes"><span class="md">PRÁTICO</span><span class="md" data-on>CÁLCULO</span><span class="md">NORMA</span></div>
+        </div>
+        <div class="cstream">
+          <div class="uask"><em>PERGUNTA</em>Atacadista de material de construção no RS, faturamento mensal R$ 900 mil, prazo médio de recebimento 32 dias. Quanto de capital de giro ele precisa no primeiro mês de split payment?</div>
+          <div class="aout">
+            <h3>Cerca de R$ 238 mil de caixa extra, só no mês da virada.</h3>
+            <p>Ele acumula duas saídas no mesmo mês: a apuração do regime anterior, que vence normalmente, e a retenção que passa a sair na liquidação de cada venda <span class="sup">[1]</span>. A partir do segundo mês normaliza — o efeito é <b>de caixa, não de carga</b>.</p>
+            <div class="flux">
+              <div class="fh"><span>SIMULAÇÃO · MÊS DE VIRADA</span><span>BASE R$ 900.000 · ALÍQ. REF. 26,5%</span></div>
+              <div class="fr"><span>Recebimento bruto de vendas</span><span class="pos">+900.000</span><span>100%</span></div>
+              <div class="fr"><span>Retenção no ato, líquida de crédito</span><span class="neg">−119.250</span><span>13,3%</span></div>
+              <div class="fr"><span>Apuração do mês anterior</span><span class="neg">−118.700</span><span>vencida</span></div>
+              <div class="fr tt"><span>Necessidade adicional de giro</span><span class="neg">−237.950</span><span>1 mês</span></div>
+            </div>
+            <p>O que fazemos nos casos da trilha: negociar 15 dias a mais com os dois maiores fornecedores e deixar a linha de giro pré-aprovada <b>antes</b> da virada <span class="sup">[2]</span>. Quem esperou o extrato do primeiro mês para reagir pagou conta garantida sem precisar.</p>
+            <div class="srcblk">
+              <div class="sh"><span>FONTES DESTA RESPOSTA</span><span>2 DE 2 VERIFICADAS</span></div>
+              <div class="srcln"><i>[1]</i><span><b>LC 214/2025, art. 31</b> — recolhimento na liquidação financeira. "…o valor do imposto será segregado no momento da liquidação…"</span><span class="go">ABRIR</span></div>
+              <div class="srcln"><i>[2]</i><span><b>Trilha 03 · aula 3.3, em 12:40</b> — Projeção de capital de giro em 12 meses, com a planilha do atacadista de Caxias do Sul.</span><span class="go">IR AO MINUTO</span></div>
+              <div class="fb"><span>&#128077; Útil</span><span>&#128078; Errado</span><span>Pedir revisão do mentor</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cprompt"><span>Descreva o caso — regime, UF, CNAE, faturamento e prazos</span><span class="kb">⌘K</span><span class="bx blue">Consultar</span></div>
+      </main>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<style>
+/* mentoria */
+.mt{display:grid;grid-template-columns:minmax(0,1.4fr) 330px;min-height:640px}
+.mt .lft{padding:20px 24px 26px;border-right:1px solid var(--lnd)}
+.thead{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.thead .tl{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:#5E7B92}
+.thead .pb{flex:1;max-width:220px;height:5px;border-radius:3px;background:#16304C}
+.thead .pb i{display:block;height:100%;border-radius:3px;background:var(--green)}
+.thead .pc{font-size:11.5px;color:#7FD3B4;font-variant-numeric:tabular-nums;font-weight:600}
+.vid{aspect-ratio:16/9;border-radius:10px;background:radial-gradient(120% 110% at 22% 0%,#1B3A5C,#08131F);border:1px solid var(--lnd);position:relative;display:flex;align-items:center;justify-content:center}
+.vid .pl{width:50px;height:50px;border-radius:50%;background:var(--amber);color:#2A1D02;display:flex;align-items:center;justify-content:center;font-size:15px;padding-left:3px}
+.vid .tlbar{position:absolute;left:14px;right:14px;bottom:12px;height:3px;background:#1E3E5E;border-radius:2px}
+.vid .tlbar i{display:block;height:100%;width:34%;background:var(--amber);border-radius:2px}
+.vid .qual{position:absolute;top:12px;right:14px;font-family:"JetBrains Mono",monospace;font-size:9px;color:#8FA8BC;border:1px solid #22456A;padding:3px 7px;border-radius:4px}
+.vmt{display:flex;gap:14px;align-items:baseline;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;color:#5E7B92}
+.mt h2{font-size:22px;color:#fff;margin:7px 0 8px}
+.mt .lft>p{color:#93AABE;font-size:13.5px;line-height:1.6;margin:0 0 18px;max-width:62ch}
+.askbar{border:1px solid #1C5A48;background:rgba(31,169,124,.09);border-radius:10px;padding:13px 15px;display:flex;align-items:center;gap:14px}
+.askbar p{margin:0;font-size:13px;color:#B7D6CB;line-height:1.45}
+.askbar b{color:var(--amber)}
+.aulist{margin-top:20px;border-top:1px solid var(--lnd)}
+.aul{display:grid;grid-template-columns:34px 1fr 78px;gap:10px;padding:10px 0;border-bottom:1px solid #16304C;font-size:13px;align-items:baseline;color:#93AABE}
+.aul .ix{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:#5E7B92}
+.aul b{color:#DDE8F1;font-weight:500}
+.aul .st{font-family:"JetBrains Mono",monospace;font-size:9.5px;text-align:right;color:#5E7B92;letter-spacing:.05em}
+.aul[data-done] .st{color:#7FD3B4}
+.aul[data-now] b,.aul[data-now] .ix,.aul[data-now] .st{color:var(--amber)}
+.mt .rgt{padding:16px 18px;background:#0A1826;display:flex;flex-direction:column;gap:11px}
+.mt .rgt h4{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:#5E7B92;margin:0;font-weight:400}
+.trl{display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:12.5px;line-height:1.5;color:#8299AD;padding:8px 0;border-top:1px solid #16304C}
+.trl time{font-family:"JetBrains Mono",monospace;font-size:10px;color:#5E7B92}
+.trl[data-on]{color:#DDE8F1}
+.trl[data-on] time{color:var(--amber)}
+.atx{border:1px solid var(--lnd);border-radius:7px;padding:10px 12px;font-size:12px;color:#8299AD;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.atx b{color:#DDE8F1;font-weight:500;display:block}
+.atx span{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--blue2)}
+
+/* admin */
+.adm{display:grid;grid-template-columns:206px minmax(0,1fr);min-height:640px}
+.admnav{border-right:1px solid var(--lnd);background:#0A1826;padding:16px 10px;display:flex;flex-direction:column;gap:3px}
+.admnav .sc{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#4E6A80;margin:14px 10px 6px}
+.admnav a{display:block;padding:8px 11px;border-radius:7px;font-size:12.5px;color:#93AABE;text-decoration:none;font-weight:500}
+.admnav a[data-on]{background:var(--navy3);color:#fff;font-weight:600}
+.admbody{padding:20px 24px 28px;display:flex;flex-direction:column;gap:22px}
+.admhead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.admhead h2{font-size:21px;color:#fff}
+.admhead .bx{margin-left:auto}
+.panel{border:1px solid var(--lnd);border-radius:11px;background:#0E2135;overflow:hidden}
+.panel .pt{padding:11px 15px;border-bottom:1px solid var(--lnd);display:flex;align-items:center;gap:11px;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:#5E7B92}
+.panel .pt b{color:#DDE8F1;font-weight:500;letter-spacing:0;font-family:"Archivo",sans-serif;font-size:13px}
+.panel .pt .r{margin-left:auto}
+.modrow{display:grid;grid-template-columns:22px 1fr 92px 88px 62px;gap:12px;padding:9px 15px;border-bottom:1px solid #16304C;font-size:12.5px;align-items:center;color:#93AABE}
+.modrow:last-child{border-bottom:0}
+.modrow .grip{color:#3E5A72;font-size:12px}
+.modrow b{color:#DDE8F1;font-weight:500}
+.modrow .mono{font-size:10.5px;color:#5E7B92}
+.badge{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;padding:3px 7px;border-radius:4px;text-align:center;display:inline-block}
+.b-ok{background:rgba(31,169,124,.14);color:#7FD3B4;border:1px solid #1C5A48}
+.b-run{background:rgba(240,180,41,.13);color:#F3CB74;border:1px solid #6A5117}
+.b-wait{background:rgba(94,123,146,.14);color:#8FA8BC;border:1px solid #24425E}
+.b-err{background:rgba(224,100,79,.13);color:#F0917E;border:1px solid #6D3126}
+.mdgroup{padding:9px 15px;background:#0B1E31;border-bottom:1px solid #16304C;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:#7591A8;display:flex;justify-content:space-between}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.drop{border:1.5px dashed #24455F;border-radius:10px;padding:18px;text-align:center;background:#0B1E31}
+.drop b{display:block;color:#DDE8F1;font-size:13.5px;margin-bottom:4px}
+.drop span{font-size:11.5px;color:#7591A8;line-height:1.45;display:block;max-width:40ch;margin:0 auto}
+.pipe{display:grid;gap:7px;padding:14px 15px}
+.pstep{display:grid;grid-template-columns:16px 1fr auto;gap:11px;font-size:12px;color:#93AABE;align-items:center}
+.pstep i{width:16px;height:16px;border-radius:50%;border:1px solid #24455F;font-style:normal;font-size:8px;display:flex;align-items:center;justify-content:center;color:#5E7B92}
+.pstep[data-ok] i{background:var(--green);border-color:var(--green);color:#04241A;font-weight:700}
+.pstep[data-run] i{border-color:var(--amber);color:var(--amber)}
+.pstep b{color:#DDE8F1;font-weight:500}
+.docrow{display:grid;grid-template-columns:1fr 104px 96px 74px;gap:12px;padding:9px 15px;border-bottom:1px solid #16304C;font-size:12.5px;align-items:center;color:#93AABE}
+.docrow:last-child{border-bottom:0}
+.docrow b{color:#DDE8F1;font-weight:500;display:block}
+.docrow em{font-style:normal;font-size:10.5px;color:#5E7B92}
+.vig{font-family:"JetBrains Mono",monospace;font-size:10px;color:#8FA8BC}
+.qrow{display:grid;grid-template-columns:1fr 120px 78px;gap:12px;padding:10px 15px;border-bottom:1px solid #16304C;font-size:12.5px;color:#93AABE;align-items:center}
+.qrow:last-child{border-bottom:0}
+.qrow b{color:#DDE8F1;font-weight:500}
+.qrow em{font-style:normal;font-size:10.5px;color:#5E7B92;display:block;margin-top:2px}
+</style>
+
+<section class="wrap caption" data-cap="mentoria" hidden>
+  <div>
+    <span class="n">Tela 4</span>
+    <h2>Mentoria</h2>
+    <p>A Mentoria é <strong>uma aplicação inteira dentro da aplicação</strong>, com submenu próprio: minha trilha, todas as trilhas, materiais, plantões, progresso e certificados. Trate-a como sistema, não como lista de vídeos. A transcrição fica ao lado do player com marcação de tempo, e a barra verde entende onde você parou — o convite é perguntar sobre <em>aquele trecho</em>. Essa ponte só aparece para quem tem os dois produtos; quem comprou só a mentoria vê a aula completa, sem ela.</p>
+  </div>
+  <dl class="keys">
+    <div class="key-r"><dt>Vídeo</dt><dd>HLS com URL assinada por aluno</dd></div>
+    <div class="key-r"><dt>Transcrição</dt><dd>Gerada no upload · vira fonte do copiloto</dd></div>
+    <div class="key-r"><dt>Anexos</dt><dd>Planilha, petição e checklist por aula</dd></div>
+  </dl>
+</section>
+
+<div class="wrap">
+<div class="frame" data-screen="mentoria" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">app.praxisfiscal.com.br/mentoria/transicao/2-3</div></div>
+  <div class="scroller"><div class="mock ap">
+    <div class="bar">
+      <div class="brand"><i></i>Praxis Fiscal</div>
+      <nav><a>Copiloto</a><a data-on>Mentoria</a><a>Meus documentos</a></nav>
+      <div class="r"><span class="basedate">&#9679; BASE 04.09.2026</span><span>Aline Bertoni</span><span class="who">AB</span></div>
+    </div>
+    <style>
+      .ap .subbar{display:flex;align-items:center;gap:2px;padding:0 26px;border-bottom:1px solid var(--lnd);background:#0C1F32}
+      .ap .subbar a{font-size:12.5px;color:#7591A8;padding:11px 13px;text-decoration:none;border-bottom:2px solid transparent;display:block;font-weight:500}
+      .ap .subbar a[data-on]{color:#fff;border-bottom-color:var(--amber);font-weight:700}
+      .ap .subbar .crumb{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:#5E7B92;letter-spacing:.09em}
+      .ap .subbar .pin{background:rgba(31,169,124,.14);color:#7FD3B4;border:1px solid #1C5A48;border-radius:20px;font-size:10px;padding:3px 9px;font-family:"JetBrains Mono",monospace;letter-spacing:.06em;margin-left:10px}
+    </style>
+    <div class="subbar">
+      <a data-on>Minha trilha</a>
+      <a>Todas as trilhas</a>
+      <a>Materiais</a>
+      <a>Plantões ao vivo</a>
+      <a>Meu progresso</a>
+      <a>Certificados</a>
+      <span class="pin">PRÓXIMO PLANTÃO: 18 SET, 19H</span>
+      <span class="crumb">MENTORIA / TRILHA 02 / MÓDULO 2 / AULA 3</span>
+    </div>
+    <div class="mt">
+      <section class="lft">
+        <div class="thead">
+          <span class="tl">TRILHA 02 · TRANSIÇÃO 2026–2033 · MÓDULO 2</span>
+          <div class="pb"><i style="width:38%"></i></div>
+          <span class="pc">38% · 9 de 23 aulas</span>
+        </div>
+        <div class="vid"><div class="pl">&#9654;</div><div class="qual">1080p · HLS</div><div class="tlbar"><i></i></div></div>
+        <div class="vmt"><span>AULA 2.3</span><span>07:22 / 21:40</span><span>ATUALIZADA EM 28.08.2026</span></div>
+        <h2>Homologação de saldo credor: o protocolo, passo a passo</h2>
+        <p>A contadora abre o processo real de uma distribuidora de bebidas de SP com R$ 1,4 mi de saldo, do levantamento contábil ao protocolo. No fim da aula você monta o dossiê do seu cliente com o mesmo checklist.</p>
+        <div class="askbar">
+          <p>Você está em <b>07:22</b>, onde ela fala do prazo de 18 a 30 meses em SP. Quer perguntar algo sobre este trecho?</p>
+          <span class="bx blue">Perguntar ao copiloto</span>
+        </div>
+        <div class="aulist">
+          <div class="aul" data-done><span class="ix">2.1</span><b>Levantar o saldo real na contabilidade</b><span class="st">19:04 · VISTO</span></div>
+          <div class="aul" data-done><span class="ix">2.2</span><b>Por que 240 parcelas mudam o valuation</b><span class="st">15:12 · VISTO</span></div>
+          <div class="aul" data-now><span class="ix">2.3</span><b>Homologação: o protocolo, passo a passo</b><span class="st">21:40 · AGORA</span></div>
+          <div class="aul"><span class="ix">2.4</span><b>Transferência entre estabelecimentos</b><span class="st">24:18</span></div>
+          <div class="aul"><span class="ix">2.5</span><b>Compensação com terceiros: quando cabe</b><span class="st">23:50</span></div>
+        </div>
+      </section>
+      <aside class="rgt">
+        <h4>Transcrição</h4>
+        <div class="trl"><time>06:48</time><span>…o erro mais comum é levantar o saldo pelo SPED e parar por aí. O fisco vai pedir a memória de cálculo por período de apuração.</span></div>
+        <div class="trl" data-on><time>07:22</time><span>Em São Paulo, hoje, o rito de homologação leva de 18 a 30 meses. E essa fila só cresce conforme 2032 se aproxima — quem protocolar em 2030 vai pegar uma fila muito pior.</span></div>
+        <div class="trl"><time>08:05</time><span>Então a recomendação é: protocola agora, mesmo com o valor ainda em depuração. Você complementa depois.</span></div>
+        <div class="trl"><time>08:51</time><span>Vou abrir o protocolo do caso real. Repare no campo de fundamentação…</span></div>
+        <h4 style="margin-top:8px">Anexos desta aula</h4>
+        <div class="atx"><div><b>Planilha de levantamento</b>saldo credor por período</div><span>XLSX</span></div>
+        <div class="atx"><div><b>Modelo de petição — SP</b>fundamentação preenchida</div><span>DOCX</span></div>
+        <div class="atx"><div><b>Checklist do dossiê</b>1 página, para imprimir</div><span>PDF</span></div>
+      </aside>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<section class="wrap caption" data-cap="admin" hidden>
+  <div>
+    <span class="n">Tela 5</span>
+    <h2>Admin</h2>
+    <p>O que o administrador faz aqui não é só cadastrar aula: é <strong>alimentar o copiloto</strong>. Subir um vídeo dispara transcode, transcrição e indexação — a transcrição vira fonte citável. Cada documento da base carrega <strong>vigência</strong>, porque na transição uma resposta certa em 2026 fica errada em 2029, e o copiloto precisa saber a que período aquilo se aplica. A fila de revisão fecha o ciclo: toda resposta marcada como errada volta para o mentor.</p>
+  </div>
+  <dl class="keys">
+    <div class="key-r"><dt>Conteúdo</dt><dd>Trilha → módulo → aula, com arrastar para ordenar</dd></div>
+    <div class="key-r"><dt>Ingestão</dt><dd>Upload → transcode → transcrição → chunk → índice</dd></div>
+    <div class="key-r"><dt>Qualidade</dt><dd>Vigência por documento · fila de revisão do joinha</dd></div>
+  </dl>
+</section>
+
+<div class="wrap">
+<div class="frame" data-screen="admin" hidden>
+  <div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="url">admin.praxisfiscal.com.br/trilhas/02</div></div>
+  <div class="scroller"><div class="mock ap">
+    <div class="bar">
+      <div class="brand"><i></i>Praxis Fiscal <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--amber);letter-spacing:.12em;font-weight:400;margin-left:2px">ADMIN</span></div>
+      <div class="r"><span>Contadora · mentora</span><span class="who">CT</span></div>
+    </div>
+    <div class="adm">
+      <aside class="admnav">
+        <div class="sc">Conteúdo</div>
+        <a data-on>Trilhas e aulas</a>
+        <a>Biblioteca de vídeos</a>
+        <a>Materiais e anexos</a>
+        <div class="sc">Copiloto</div>
+        <a>Base de conhecimento</a>
+        <a>Fila de revisão</a>
+        <a>Perguntas sem resposta</a>
+        <div class="sc">Negócio</div>
+        <a>Alunos e assinaturas</a>
+        <a>Custo de IA por aluno</a>
+      </aside>
+      <div class="admbody">
+        <div class="admhead">
+          <h2>Trilha 02 · Transição 2026–2033</h2>
+          <span class="badge b-ok">PUBLICADA</span>
+          <span class="bx blue">Nova aula</span>
+        </div>
+
+        <div class="panel">
+          <div class="pt"><b>Estrutura da trilha</b><span>4 MÓDULOS · 23 AULAS · 6H48</span><span class="r">ARRASTE PARA REORDENAR</span></div>
+          <div class="mdgroup"><span>MÓDULO 2 · SALDO CREDOR E ATIVO FISCAL</span><span>5 AULAS · 1H44</span></div>
+          <div class="modrow"><span class="grip">&#8942;&#8942;</span><b>2.1 Levantar o saldo real na contabilidade</b><span class="mono">19:04</span><span class="badge b-ok">INDEXADA</span><span class="mono">3 anexos</span></div>
+          <div class="modrow"><span class="grip">&#8942;&#8942;</span><b>2.2 Por que 240 parcelas mudam o valuation</b><span class="mono">15:12</span><span class="badge b-ok">INDEXADA</span><span class="mono">1 anexo</span></div>
+          <div class="modrow"><span class="grip">&#8942;&#8942;</span><b>2.3 Homologação: o protocolo, passo a passo</b><span class="mono">21:40</span><span class="badge b-run">TRANSCREVENDO</span><span class="mono">3 anexos</span></div>
+          <div class="modrow"><span class="grip">&#8942;&#8942;</span><b>2.4 Transferência entre estabelecimentos</b><span class="mono">24:18</span><span class="badge b-ok">INDEXADA</span><span class="mono">2 anexos</span></div>
+          <div class="modrow"><span class="grip">&#8942;&#8942;</span><b>2.5 Compensação com terceiros: quando cabe</b><span class="mono">23:50</span><span class="badge b-wait">RASCUNHO</span><span class="mono">—</span></div>
+        </div>
+
+        <div class="two-col">
+          <div class="panel">
+            <div class="pt"><b>Subir vídeo da aula 2.5</b></div>
+            <div style="padding:15px">
+              <div class="drop"><b>Arraste o arquivo ou clique para escolher</b><span>MP4 ou MOV até 8 GB. O transcode e a legenda são gerados automaticamente — você não precisa exportar em várias resoluções.</span></div>
+            </div>
+            <div class="pt" style="border-top:1px solid var(--lnd)"><b>Aula 2.3 · em processamento</b><span class="r">HÁ 6 MIN</span></div>
+            <div class="pipe">
+              <div class="pstep" data-ok><i>&#10003;</i><span><b>Upload concluído</b> · 2,4 GB</span><span class="mono" style="font-size:10px;color:#5E7B92">00:41</span></div>
+              <div class="pstep" data-ok><i>&#10003;</i><span><b>Transcode HLS</b> · 360p a 1080p</span><span class="mono" style="font-size:10px;color:#5E7B92">03:12</span></div>
+              <div class="pstep" data-run><i>&#9679;</i><span><b>Transcrição e marcação de tempo</b></span><span class="mono" style="font-size:10px;color:#F3CB74">62%</span></div>
+              <div class="pstep"><i></i><span>Fatiar e indexar na base do copiloto</span><span class="mono" style="font-size:10px;color:#5E7B92">na fila</span></div>
+              <div class="pstep"><i></i><span>Revisão do mentor e publicação</span><span class="mono" style="font-size:10px;color:#5E7B92">—</span></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="pt"><b>Base de conhecimento</b><span class="r">340 DOCUMENTOS</span></div>
+            <div class="docrow"><div><b>Roteiro de queima de saldo credor</b><em>material do mentor · 14 trechos</em></div><span class="vig">2026 → 2032</span><span class="badge b-ok">INDEXADO</span><span class="mono" style="font-size:10px">v3</span></div>
+            <div class="docrow"><div><b>LC 214/2025 — texto consolidado</b><em>norma · 812 trechos</em></div><span class="vig">2026 → sem fim</span><span class="badge b-ok">INDEXADO</span><span class="mono" style="font-size:10px">v7</span></div>
+            <div class="docrow"><div><b>Nota técnica SEFAZ-SP 12/2026</b><em>norma estadual · 22 trechos</em></div><span class="vig">2026 → 2032</span><span class="badge b-run">INDEXANDO</span><span class="mono" style="font-size:10px">v1</span></div>
+            <div class="docrow"><div><b>Aula 3.3 — transcrição</b><em>transcrição · 61 trechos</em></div><span class="vig">2026 → 2027</span><span class="badge b-ok">INDEXADO</span><span class="mono" style="font-size:10px">v2</span></div>
+            <div class="docrow"><div><b>Cartilha antiga de PIS/Cofins</b><em>material do mentor · 96 trechos</em></div><span class="vig">até 2026</span><span class="badge b-err">APOSENTADO</span><span class="mono" style="font-size:10px">v1</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="pt"><b>Fila de revisão</b><span>RESPOSTAS QUE ALUNOS MARCARAM COMO ERRADAS OU INCOMPLETAS</span><span class="r">4 ABERTAS</span></div>
+          <div class="qrow"><div><b>"Bar e restaurante tem alíquota reduzida de quanto?"</b><em>3 alunos marcaram &#128078; · o copiloto citou fonte de 2025, já superada</em></div><span class="badge b-err">CORRIGIR FONTE</span><span class="mono" style="font-size:10px">hoje</span></div>
+          <div class="qrow"><div><b>"Como fica o crédito presumido do agro?"</b><em>sem cobertura na base · 7 perguntas parecidas em 30 dias</em></div><span class="badge b-run">GRAVAR AULA</span><span class="mono" style="font-size:10px">2 dias</span></div>
+          <div class="qrow"><div><b>"Split payment em venda com cartão parcelado"</b><em>resposta certa, mas sem o passo de conciliação</em></div><span class="badge b-wait">COMPLEMENTAR</span><span class="mono" style="font-size:10px">4 dias</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<style>
+.close{border-top:1px solid var(--line);padding:36px 0 60px}
+.close h2{font-family:"Archivo",sans-serif;font-size:22px;letter-spacing:-.03em;margin:0 0 8px;font-weight:700}
+.close>.wrap>p{color:var(--muted);max-width:66ch;margin:0 0 24px;font-size:14.5px}
+.dec{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--srf)}
+.dech{background:var(--acc-soft);color:var(--acc);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;padding:9px 16px}
+.decr{display:grid;grid-template-columns:26px 190px 1fr;gap:16px;padding:13px 16px;border-top:1px solid var(--line);font-size:13.5px;align-items:baseline}
+.decr .i{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted)}
+.decr b{font-weight:600}
+.decr span{color:var(--muted);line-height:1.55}
+</style>
+
+<section class="close">
+  <div class="wrap">
+    <h2>O que ainda não está decidido</h2>
+    <p>Estas telas assumem respostas para perguntas que ainda não foram feitas. Cada linha muda modelagem de dados ou escolha de fornecedor — e sai muito mais barato responder agora do que na migração da POC para produção.</p>
+    <div class="dec">
+      <div class="dech">Decisões que travam modelagem</div>
+      <div class="decr"><span class="i">01</span><b>Quem é a conta <em style="font-style:normal;color:#1FA97C">· resolvido</em></b><span>A conta é a contabilidade (organização); os usuários são pessoas dentro dela, inclusive no caso do autônomo. Evita a migração cara de converter conta pessoal em conta de empresa depois.</span></div>
+      <div class="decr"><span class="i">02</span><b>Pix desde já</b><span>Este público paga em Pix e boleto, não em cartão internacional. Modelar assinatura com estados reais na POC evita refazer cobrança depois.</span></div>
+      <div class="decr"><span class="i">03</span><b>Vigência do conhecimento</b><span>A transição é por fases. Sem data de vigência no trecho indexado, o copiloto vai responder 2029 com regra de 2026 — e ninguém percebe até o cliente ser autuado.</span></div>
+      <div class="decr"><span class="i">04</span><b>Como medir acerto</b><span>Um conjunto de perguntas com gabarito escrito pelas mentoras, rodado a cada mudança de prompt ou de base. Sem isso não há como afirmar que o produto melhorou.</span></div>
+      <div class="decr"><span class="i">05</span><b>Dado do cliente do cliente</b><span>O contador vai colar CNPJ, faturamento e nome de terceiros no chat. Isso é dado de terceiro sob LGPD: precisa de política, retenção definida e não uso para treino.</span></div>
+      <div class="decr"><span class="i">06</span><b>Certificado e EPC</b><span>Se o certificado contar como Educação Profissional Continuada do CFC, vira argumento de venda forte — mas exige credenciamento, não só emitir PDF.</span></div>
+      <div class="decr"><span class="i">07</span><b>Custo de IA por assinante</b><span>"Consultas ilimitadas" com modelo caro come a margem. Precisa de medição por usuário desde a POC para saber o teto real da promessa.</span></div>
+      <div class="decr"><span class="i">08</span><b>Vazamento de vídeo</b><span>Curso de R$ 1.890 circula em grupo de WhatsApp. URL assinada por sessão resolve a maior parte; marca d'água com e-mail do aluno resolve o resto.</span></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var cur = "landing";
+  function apply(){
+    document.querySelectorAll("[data-cap]").forEach(function(el){ el.hidden = el.getAttribute("data-cap") !== cur; });
+    document.querySelectorAll(".frame[data-screen]").forEach(function(el){ el.hidden = el.getAttribute("data-screen") !== cur; });
+    document.querySelectorAll(".tab[data-screen]").forEach(function(b){ b.setAttribute("aria-selected", String(b.getAttribute("data-screen") === cur)); });
+  }
+  document.querySelectorAll(".tab[data-screen]").forEach(function(b){
+    b.addEventListener("click", function(){ cur = b.getAttribute("data-screen"); apply(); window.scrollTo({top:0,behavior:"smooth"}); });
+  });
+  apply();
+})();
+</script>

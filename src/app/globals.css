@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+/*
+  Tokens do design system. Fonte da verdade: docs/design-system.md
+  A paleta veio de uma varredura dos maiores sites de contabilidade do Brasil —
+  não a altere sem pedir revisão explícita (CLAUDE.md §2.2).
+*/
+@theme {
+  /* Ambiente do aplicativo — escuro */
+  --color-navy: #0b1a2b;
+  --color-navy-2: #112741;
+  --color-navy-3: #173252;
+  --color-borda-escura: #1e3e5e;
+
+  /* Marca e ação */
+  --color-azul: #2e7de0;
+  --color-azul-claro: #5aa3f0;
+
+  /* Semântica — separada da marca */
+  --color-verde: #1fa97c;
+  --color-amarelo: #f0b429;
+  --color-vermelho: #e0644f;
+
+  /* Ambiente claro — venda e leitura */
+  --color-papel: #f3f7fb;
+  --color-tinta: #0b1a2b;
+  --color-apagado: #5a7183;
+  --color-borda-clara: #dce5ef;
+
+  --font-display: var(--fonte-archivo), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--fonte-jetbrains), ui-monospace, "Cascadia Code", monospace;
+}
+
+/*
+  O amarelo é exclusivo do CTA de venda e do "você está aqui".
+  Se ele começar a aparecer em toda ação, perde a função — ver docs/design-system.md §2.
+*/
+
+@layer base {
+  body {
+    font-family: var(--font-display);
+    background: var(--color-white);
+    color: var(--color-tinta);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  /* Valor tributário desalinhado é erro de leitura, não de estética. */
+  table,
+  [data-numerico] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-azul);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
