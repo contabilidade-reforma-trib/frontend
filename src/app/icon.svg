@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Mesma marca do cabeçalho: quadrado navy com o ponto âmbar ao centro. -->
+  <rect width="32" height="32" rx="9" fill="#0B1A2B"/>
+  <circle cx="16" cy="16" r="6.7" fill="#F0B429"/>
+</svg>

@@ -12,8 +12,25 @@ import type { RespostaDeSaude } from "@/lib/api";
  * navegador em momento algum.
  */
 
-const URL_DO_BACKEND = (process.env.API_URL ?? "http://localhost:5000").replace(/\/+$/, "");
 const TEMPO_LIMITE_MS = 8000;
+
+/**
+ * Aceita a URL com ou sem esquema. Colar `meu-app.up.railway.app` no painel é o
+ * erro mais fácil de cometer, e sem esquema o `fetch` do servidor trata o valor
+ * como caminho relativo e falha com uma mensagem que não aponta para a causa.
+ */
+function normalizarUrlDoBackend(valor: string | undefined): string {
+  const bruto = (valor ?? "http://localhost:5000").trim().replace(/\/+$/, "");
+
+  if (/^https?:\/\//i.test(bruto)) {
+    return bruto;
+  }
+
+  // localhost sem esquema é desenvolvimento; qualquer outro host assume https.
+  return `${bruto.startsWith("localhost") ? "http" : "https"}://${bruto}`;
+}
+
+const URL_DO_BACKEND = normalizarUrlDoBackend(process.env.API_URL);
 
 // Sem isso o Next tentaria resolver a rota no build, quando o backend não existe.
 export const dynamic = "force-dynamic";
