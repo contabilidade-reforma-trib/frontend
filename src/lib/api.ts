@@ -5,35 +5,33 @@
  * do Next atua como BFF e repassa para o backend no Railway. O navegador nunca
  * conhece a URL do backend, e o backend não precisa de CORS.
  *
- * A URL do backend vive em `API_URL`, variável de servidor, lida apenas nos
- * route handlers em `src/app/api/`. Nada de `NEXT_PUBLIC_`.
+ * Os nomes dos campos abaixo espelham o contrato do backend, que é escrito em
+ * inglês — traduzir aqui só criaria um dicionário a mais para manter.
  */
 
-export type EstadoDoBanco = {
-  conectado: boolean;
-  latenciaMs: number;
-  erro: string | null;
+export type DatabaseStatus = {
+  connected: boolean;
+  latencyMs: number;
+  error: string | null;
 };
 
-export type EstadoDoArmazenamento = {
-  configurado: boolean;
+export type StorageStatus = {
+  configured: boolean;
 };
 
-export type RespostaDeSaude = {
-  status: "ok" | "degradado";
-  servico: string;
-  versao: string;
-  ambiente: string;
-  momentoUtc: string;
-  banco: EstadoDoBanco;
-  armazenamento: EstadoDoArmazenamento;
+export type HealthResponse = {
+  status: "ok" | "degraded";
+  service: string;
+  version: string;
+  environment: string;
+  timestampUtc: string;
+  database: DatabaseStatus;
+  storage: StorageStatus;
 };
 
-export type ResultadoDaChamada<T> =
-  | { ok: true; dados: T }
-  | { ok: false; mensagem: string };
+export type CallResult<T> = { ok: true; data: T } | { ok: false; message: string };
 
-const MENSAGEM_PADRAO_DE_FALHA =
+const DEFAULT_FAILURE_MESSAGE =
   "Não foi possível falar com o servidor do Next. Recarregue a página e, se persistir, verifique o deploy na Vercel.";
 
 /**
@@ -41,24 +39,24 @@ const MENSAGEM_PADRAO_DE_FALHA =
  * precisa tratar os dois — e uma mensagem que diz o que fazer vale mais que uma
  * exceção genérica na tela.
  */
-export async function consultarSaude(): Promise<ResultadoDaChamada<RespostaDeSaude>> {
+export async function fetchHealth(): Promise<CallResult<HealthResponse>> {
   try {
-    const resposta = await fetch("/api/saude", {
+    const response = await fetch("/api/health", {
       cache: "no-store",
       headers: { Accept: "application/json" },
     });
 
-    const corpo = await resposta.json().catch(() => null);
+    const body = await response.json().catch(() => null);
 
-    if (!resposta.ok) {
-      const mensagem =
-        corpo && typeof corpo.mensagem === "string" ? corpo.mensagem : MENSAGEM_PADRAO_DE_FALHA;
+    if (!response.ok) {
+      const message =
+        body && typeof body.message === "string" ? body.message : DEFAULT_FAILURE_MESSAGE;
 
-      return { ok: false, mensagem };
+      return { ok: false, message };
     }
 
-    return { ok: true, dados: corpo as RespostaDeSaude };
+    return { ok: true, data: body as HealthResponse };
   } catch {
-    return { ok: false, mensagem: MENSAGEM_PADRAO_DE_FALHA };
+    return { ok: false, message: DEFAULT_FAILURE_MESSAGE };
   }
 }

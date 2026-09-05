@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { RespostaDeSaude } from "@/lib/api";
+import type { HealthResponse } from "@/lib/api";
 
 /**
  * BFF: o navegador chama esta rota na origem da Vercel, e é o servidor do Next
@@ -40,7 +40,7 @@ export async function GET() {
   const expiracao = setTimeout(() => controlador.abort(), TEMPO_LIMITE_MS);
 
   try {
-    const resposta = await fetch(`${URL_DO_BACKEND}/api/saude`, {
+    const resposta = await fetch(`${URL_DO_BACKEND}/api/health`, {
       signal: controlador.signal,
       cache: "no-store",
       headers: { Accept: "application/json" },
@@ -48,19 +48,19 @@ export async function GET() {
 
     if (!resposta.ok) {
       return NextResponse.json(
-        { mensagem: `A API respondeu ${resposta.status}. Verifique o serviço no Railway.` },
+        { message: `A API respondeu ${resposta.status}. Verifique o serviço no Railway.` },
         { status: 502 },
       );
     }
 
-    const saude = (await resposta.json()) as RespostaDeSaude;
-    return NextResponse.json(saude, { status: 200 });
+    const health = (await resposta.json()) as HealthResponse;
+    return NextResponse.json(health, { status: 200 });
   } catch (erro) {
     const expirou = erro instanceof DOMException && erro.name === "AbortError";
 
     return NextResponse.json(
       {
-        mensagem: expirou
+        message: expirou
           ? "A API não respondeu em 8 segundos. Ela pode estar hibernando — tente de novo."
           : "O servidor do Next não conseguiu falar com a API. Confira a variável API_URL e se o serviço do Railway está no ar.",
       },

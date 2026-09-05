@@ -53,7 +53,8 @@ Pare, descreva e aguarde resposta antes de alterar:
 ### 2.3 Nomes dizem o que a coisa faz
 
 - Componente e função com nome legível por quem nunca viu o código: `CartaoDeTrilha`, `useDireitoDeUso`.
-- **Idioma:** domínio em **português** (`Trilha`, `Aula`, `Consulta`, `Assinatura`); técnico em **inglês** (`Provider`, `Layout`, `useState`). Nunca misturado no mesmo identificador.
+- **Idioma:** o backend é todo em inglês. **Tudo que espelha o contrato da API usa os nomes do backend** — tipo, campo, rota (`HealthResponse`, `database.connected`, `/api/health`). Traduzir na fronteira só cria um dicionário a mais para manter.
+- Componentes e textos de interface existentes seguem em português; não há refatoração pendente deles.
 - Nada de `data`, `item`, `handleClick2`, `Component1`.
 
 ### 2.4 Escalável desde agora
