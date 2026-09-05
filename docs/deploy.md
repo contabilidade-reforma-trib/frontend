@@ -11,8 +11,13 @@
 | Install Command | `npm install` *(padrão)* |
 | Output Directory | *(padrão do Next)* |
 | Node.js Version | **24.x** |
+| Região das funções | **iad1** (Washington D.C. / Norte da Virgínia) |
 
 A versão do Node importa: o projeto usa `@types/node` 24 e o build foi verificado nessa versão.
+
+A região está fixada em `vercel.json`, versionada, e não em configuração de painel — assim ela não depende de ninguém lembrar de conferir. O objetivo é ficar do lado do Railway e do Neon: cada salto entre regiões diferentes soma latência ao caminho navegador → BFF → API → banco.
+
+No plano Hobby só é possível **uma** região. `iad1` é também o padrão da Vercel, então na prática isto documenta e trava o que já valia.
 
 ## 2. Variáveis de ambiente
 
